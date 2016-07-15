@@ -1,6 +1,3 @@
-//
-// Created by camus on 15/07/2016.
-//
 #include <stdio.h>
 
 int is_prime(int candidate) {
