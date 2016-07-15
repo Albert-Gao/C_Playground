@@ -1,0 +1,7 @@
+gcc -W -Wall -O2 -ansi -pedantic -g first-program.c -o print-nums
+
+gcc -W -Wall -O2 -ansi -pedantic -g using-math.c -o print-sqrts -lm
+
+1. The flags -W -Wall tell gcc to check for the widest range of possible errors (some checks require optimisation to be turned on). They won’t stop the program compiling, but they will warn you that something fishy might be going on. 
+2. The -g flag includes debugging information in the executable (which could be very useful later). 
+3. The -o flag comes before the name of executable file you want to produce. 
