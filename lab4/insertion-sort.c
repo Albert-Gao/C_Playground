@@ -4,29 +4,28 @@
 
 #define ARRAY_MAX 40000
 
+/*
+ * Start from the 2nd item,
+ * everytime when you do a sort,
+ * bumped the started item first,
+ * then compare all the previous items one by one,
+ * from left to right, if the checked item is bigger
+ * than the bumped item, copy its value to the bumped value,
+ * then move one step back to do the checking again,
+ * until you are outOfIndex, then insert the bumped value
+ * to the stopped position. 
+ */
 void insertion_sort(int *arr, int size) {
-    /* Sorting code goes here */
     int start,previousIndex,insertValue;
 
-    /* Start from the 2nd item*/
     for (start = 1; start < size; start++) {
         insertValue = arr[start];
-        /* index of the value need to compare
-         * with the insert value 
-         */
         previousIndex = start - 1;
 
-        /* While the previous item is bigger than the insertValue
-         * and we don't outOfIndex, do the while loop
-         */
         while (previousIndex >= 0 && arr[previousIndex] > insertValue) {
-            /* store the previous value to the item next to it */
             arr[previousIndex + 1] = arr[previousIndex];
-            /* narrow the sorted list by move index by 1 step back*/
             previousIndex = previousIndex - 1;
         }
-        /* store the bumped insertValue to the front
-         * of the sorted list */
         arr[previousIndex + 1] = insertValue;
     }
 }

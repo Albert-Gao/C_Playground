@@ -5,30 +5,28 @@
 #define ARRAY_MAX 40000
 
 /*
- *
- *
+ * start from the first item to the last
+ * everytime you start from a index,
+ * check all the rest items to its right side,
+ * and everytime you found a smaller value,
+ * mark its index until you hit the end.
+ * swap the foundSmallest to the current start-loop-item
+ * move the start index one more step to the right
+ * then do the previous procedures again.
  */
 void selection_sort(int *arr, int size) {
     /* Sorting code goes here */
     int i,j,min_index,tempSwap;
 
-    /*start from the first item to the last*/
     for (i=0; i<size-1; i++){
-        /* set the start index to min because in
-         * the previous loop, it will exchange to
-         * the smaller value */
         min_index = i;
 
-        /*search from the rest of the array*/
         for (j=i+1;j<size;j++){
-            /*if found a smaller one than the excluding item,
-              store its index to the excluding item*/
             if (arr[j]<arr[min_index]){
                 min_index=j;
             }
         }
 
-        /* swap the value of the two items */
         tempSwap = arr[min_index];
         arr[min_index]=arr[i];
         arr[i]=tempSwap;        
