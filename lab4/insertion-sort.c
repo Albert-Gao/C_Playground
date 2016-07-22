@@ -13,7 +13,7 @@
  * than the bumped item, copy its value to the bumped value,
  * then move one step back to do the checking again,
  * until you are outOfIndex, then insert the bumped value
- * to the stopped position. 
+ * to the (stopped position+1) to avoid the outOfIndex. 
  */
 void insertion_sort(int *arr, int size) {
     int start,previousIndex,insertValue;
