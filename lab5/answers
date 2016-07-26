@@ -1,0 +1,18 @@
+(a) DRY
+(b) size_t, but what is [][]?
+(c) because there is a extra '\0' after the end of the string
+(d) yes, it just re-point the 2 pointers
+(e) 79 chars
+(f) ...
+
+
+
+char* wordlist[3];
+
+wordlist -> {0x4765, NULL, NULL};
+
+wordlist[0] = malloc(4 * sizeof(char));
+
+wordlist[0] -> {'0', '0', '0', '0'}
+
+wordlist[0][0]
