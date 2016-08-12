@@ -2,7 +2,25 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define ARRAY_MAX 40000
+#define ARRAY_MAX 2000000
+#define DROP_IN_SIZE 50
+int my_array[ARRAY_MAX];
+int w[ARRAY_MAX];
+
+void insertion_sort(int *arr, int size) {
+    int start,previousIndex,insertValue;
+
+    for (start = 1; start < size; start++) {
+        insertValue = arr[start];
+        previousIndex = start - 1;
+
+        while (previousIndex >= 0 && arr[previousIndex] > insertValue) {
+            arr[previousIndex + 1] = arr[previousIndex];
+            previousIndex = previousIndex - 1;
+        }
+        arr[previousIndex + 1] = insertValue;
+    }
+}
 
 void merge(int *arr, int *w, int length) {
     int middle = length/2;
@@ -36,23 +54,31 @@ void merge(int *arr, int *w, int length) {
 /*
  *
  */
-void merge_sort(int *arr, int *w, int length) {
+void mix_merge_sort(int *arr, int *w, int length){
     int i = 0, middle = (length/2);
-    if (length<2) {
+
+    if (sizeof(arr)<2){
         return;
     }
-    merge_sort(arr, w, middle);
-    merge_sort(arr + middle, w + middle, length-middle);
-    merge(arr, w, length);
+
+    if (length<DROP_IN_SIZE){
+        insertion_sort(arr, length);
+    } else {
+        mix_merge_sort(arr, w, middle);
+        mix_merge_sort(arr + middle, w + middle, length-middle);
+        merge(arr, w, length);
    
-    for (i = 0; i < length; i++){
-        arr[i] = w[i];
+        for (i = 0; i < length; i++){
+            arr[i] = w[i];
+        }
     }
+    
 }
 
+
+
 int main(void) {
-    int my_array[ARRAY_MAX];
-    int w[ARRAY_MAX];
+
     
     clock_t start, end;
     int i, count = 0;
@@ -62,7 +88,7 @@ int main(void) {
     }
 
     start = clock();
-    merge_sort(my_array, w, count);
+    mix_merge_sort(my_array, w, count);
     end = clock();
 
     for (i = 0; i < count; i++) {
