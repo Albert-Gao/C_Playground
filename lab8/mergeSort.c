@@ -42,7 +42,9 @@ void merge_sort(int *arr, int *w, int length) {
         return;
     }
     merge_sort(arr, w, middle);
+    
     merge_sort(arr + middle, w + middle, length-middle);
+    
     merge(arr, w, length);
    
     for (i = 0; i < length; i++){
