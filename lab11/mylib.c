@@ -12,7 +12,7 @@ void *emalloc(size_t s) {
 }
 
 void *erealloc(void *p, size_t s) {
-    void *result = realloc(*p, s);
+    void *result = realloc(p, s);
     if (NULL == result) {
         fprintf(stderr, "Memory re-allocation failed!\n");
         exit(EXIT_FAILURE);
