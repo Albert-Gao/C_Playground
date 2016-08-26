@@ -12,9 +12,9 @@ struct htable{
 
 htable htable_new(int capacity){
     htable result = emalloc(sizeof * result);
+    result->capacity = capacity;
     result->keys = emalloc(result->capacity * sizeof result->keys[0]);
     result->frequencies = emalloc(result->capacity * sizeof result->frequencies[0]);
-    result->capacity = capacity;
     for (unsigned int i = 0; i < result->capacity; i++){
       result->frequencies[i] = 0;
       result->keys[i] = NULL;
