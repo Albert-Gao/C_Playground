@@ -25,14 +25,12 @@ htable htable_new(int capacity){
 }
 
 void htable_free(htable h){
+    for (int i=0; i < h->capacity; i++){
+        free(h->keys[i]);
+    }
     free(h->keys);
     free(h->frequencies);
     free(h);
-}
-
-static unsigned int htable_step(htable h, unsigned int i_key) {
-  //return 1 + (i_key % (h->capacity - 1));
-  return i_key%h->capacity;
 }
 
 static unsigned int htable_word_to_int(char *word) {
@@ -45,7 +43,7 @@ static unsigned int htable_word_to_int(char *word) {
 
 int htable_insert(htable h, char *str){
     unsigned int convert = htable_word_to_int(str);
-    unsigned int index = htable_step(h,convert);
+    unsigned int index = convert%h->capacity;
     unsigned int i = 0;
     if (h->keys[index] == NULL){
         h->keys[index] = emalloc((strlen(str) + 1) * sizeof str[0]);
@@ -87,7 +85,7 @@ int htable_insert(htable h, char *str){
 int htable_search(htable h, char *str){
     unsigned int collision = 0;
     unsigned int convert = htable_word_to_int(str);
-    unsigned int index = htable_step(h,convert);
+    unsigned int index = convert%h->capacity;
 
     while(h->keys[index]!=NULL &&
           (strcmp(str, h->keys[index])!=0 )){
