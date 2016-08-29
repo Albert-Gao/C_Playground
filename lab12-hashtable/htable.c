@@ -11,8 +11,6 @@ struct htablemod{
 #include "htable.h"
 #include "mylib.h"
 
-
-
 htable htable_new(int capacity){
     htable result = (htable)emalloc(sizeof * result);
     result->capacity = capacity;
@@ -28,7 +26,9 @@ htable htable_new(int capacity){
 
 void htable_free(htable h){
     for (unsigned int i=0; i < h->capacity; i++){
-        free(h->keys[i]);
+        if ( h->keys[i] != NULL ){
+            free(h->keys[i]);
+        }
     }
     free(h->keys);
     free(h->frequencies);
