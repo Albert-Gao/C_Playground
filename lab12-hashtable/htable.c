@@ -1,22 +1,24 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "htable.h"
-#include "mylib.h"
-
-struct htable{
+struct htablemod{
     unsigned int capacity;
     int num_keys;
     char **keys;
     unsigned int *frequencies;
 };
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "htable.h"
+#include "mylib.h"
+
+
+
 htable htable_new(int capacity){
-    htable result = emalloc(sizeof * result);
+    htable result = (htable)emalloc(sizeof * result);
     result->capacity = capacity;
     result->num_keys = 0;
-    result->keys = emalloc(result->capacity * sizeof result->keys[0]);
-    result->frequencies = emalloc(result->capacity * sizeof result->frequencies[0]);
+    result->keys = (char **)emalloc(result->capacity * sizeof result->keys[0]);
+    result->frequencies = (unsigned int *)emalloc(result->capacity * sizeof result->frequencies[0]);
     for (unsigned int i = 0; i < result->capacity; i++){
       result->frequencies[i] = 0;
       result->keys[i] = NULL;
@@ -25,7 +27,7 @@ htable htable_new(int capacity){
 }
 
 void htable_free(htable h){
-    for (int i=0; i < h->capacity; i++){
+    for (unsigned int i=0; i < h->capacity; i++){
         free(h->keys[i]);
     }
     free(h->keys);
@@ -46,7 +48,7 @@ int htable_insert(htable h, char *str){
     unsigned int index = convert%h->capacity;
     unsigned int i = 0;
     if (h->keys[index] == NULL){
-        h->keys[index] = emalloc((strlen(str) + 1) * sizeof str[0]);
+        h->keys[index] = (char *)emalloc((strlen(str) + 1) * sizeof str[0]);
         strcpy(h->keys[index], str);
         h->frequencies[index] = 1;
         h->num_keys++;
@@ -55,15 +57,11 @@ int htable_insert(htable h, char *str){
         h->frequencies[index]++;
         return h->frequencies[index];
     } else if (strcmp(str, h->keys[index])!=0){
-<<<<<<< HEAD:lab12/htable.c
-        for ( i = index; i < h->capacity; i=(i+1)%h->capacity){
-=======
         i = index + 1;
-        while (i != index) {    
->>>>>>> 03925d7514d286f5b3ff9ed73abe9ecb3bb76d68:lab12-hashtable/htable.c
+        while (i != index) {
             /* if found a open place, insert it */
             if (h->keys[i] == NULL){
-                h->keys[i] = emalloc((strlen(str) + 1) * sizeof str[0]);
+                h->keys[i] = (char *)emalloc((strlen(str) + 1) * sizeof str[0]);
                 strcpy(h->keys[i], str);
                 h->frequencies[i] = 1;
                 h->num_keys++;

@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-typedef struct htable *htable;
+typedef struct htablemod *htable;
 
 extern void htable_free(htable h);
 extern int htable_insert(htable h, char *str);
