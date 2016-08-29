@@ -25,14 +25,12 @@ htable htable_new(int capacity){
 }
 
 void htable_free(htable h){
+    for (int i=0; i < h->capacity; i++){
+        free(h->keys[i]);
+    }
     free(h->keys);
     free(h->frequencies);
     free(h);
-}
-
-static unsigned int htable_step(htable h, unsigned int i_key) {
-  //return 1 + (i_key % (h->capacity - 1));
-  return i_key%h->capacity;
 }
 
 static unsigned int htable_word_to_int(char *word) {
@@ -45,7 +43,7 @@ static unsigned int htable_word_to_int(char *word) {
 
 int htable_insert(htable h, char *str){
     unsigned int convert = htable_word_to_int(str);
-    unsigned int index = htable_step(h,convert);
+    unsigned int index = convert%h->capacity;
     unsigned int i = 0;
     if (h->keys[index] == NULL){
         h->keys[index] = emalloc((strlen(str) + 1) * sizeof str[0]);
@@ -57,7 +55,12 @@ int htable_insert(htable h, char *str){
         h->frequencies[index]++;
         return h->frequencies[index];
     } else if (strcmp(str, h->keys[index])!=0){
+<<<<<<< HEAD:lab12/htable.c
         for ( i = index; i < h->capacity; i=(i+1)%h->capacity){
+=======
+        i = index + 1;
+        while (i != index) {    
+>>>>>>> 03925d7514d286f5b3ff9ed73abe9ecb3bb76d68:lab12-hashtable/htable.c
             /* if found a open place, insert it */
             if (h->keys[i] == NULL){
                 h->keys[i] = emalloc((strlen(str) + 1) * sizeof str[0]);
@@ -77,6 +80,7 @@ int htable_insert(htable h, char *str){
             if (h->capacity == i){
                 return 0;
             }
+            i=(i+1)%h->capacity;
         }
     }
     return 0;
@@ -85,21 +89,19 @@ int htable_insert(htable h, char *str){
 int htable_search(htable h, char *str){
     unsigned int collision = 0;
     unsigned int convert = htable_word_to_int(str);
-    unsigned int index = htable_step(h,convert);
+    unsigned int index = convert%h->capacity;
 
     while(h->keys[index]!=NULL &&
-        (strcmp(str, h->keys[index])!=0 &&
-        index < h->capacity)){
+          (strcmp(str, h->keys[index])!=0 )){
 
-        index++;
+        index = (index+1)%h->capacity;
         collision++;
-    }
 
-    if (collision == h->capacity){
-        return 0;
-    } else {
-        return h->frequencies[index];
+        if (collision == h->capacity){
+            return 0;
+        }
     }
+    return h->frequencies[index];
 }
 
 void htable_print(htable h, FILE *stream){
