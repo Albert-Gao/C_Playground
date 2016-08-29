@@ -6,6 +6,7 @@
 
 struct htable{
     unsigned int capacity;
+    int num_keys;
     char **keys;
     unsigned int *frequencies;
 };
@@ -13,6 +14,7 @@ struct htable{
 htable htable_new(int capacity){
     htable result = emalloc(sizeof * result);
     result->capacity = capacity;
+    result->num_keys = 0;
     result->keys = emalloc(result->capacity * sizeof result->keys[0]);
     result->frequencies = emalloc(result->capacity * sizeof result->frequencies[0]);
     for (unsigned int i = 0; i < result->capacity; i++){
@@ -49,17 +51,19 @@ int htable_insert(htable h, char *str){
         h->keys[index] = emalloc((strlen(str) + 1) * sizeof str[0]);
         strcpy(h->keys[index], str);
         h->frequencies[index] = 1;
+        h->num_keys++;
         return 1;
     } else if (strcmp(str, h->keys[index])==0){
         h->frequencies[index]++;
         return h->frequencies[index];
     } else if (strcmp(str, h->keys[index])!=0){
-        for ( i = index; i < h->capacity; i++){
+        for ( i = index; i < h->capacity; i=(i+1)%h->capacity){
             /* if found a open place, insert it */
             if (h->keys[i] == NULL){
                 h->keys[i] = emalloc((strlen(str) + 1) * sizeof str[0]);
                 strcpy(h->keys[i], str);
                 h->frequencies[i] = 1;
+                h->num_keys++;
                 return 1;
             }
 
