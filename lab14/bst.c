@@ -8,7 +8,7 @@ struct bst_node {
     char *key;
     bst left;
     bst right;
-}
+};
 
 bst bst_delete(bst b, char *str){
     if (b==NULL){
@@ -61,6 +61,7 @@ bst bst_free(bst b){
         bst_free(b->right);
     }
     free(b);
+    return b;
 }
 
 bst bst_insert(bst b, char *str){
@@ -116,5 +117,5 @@ int bst_search(bst b, char *str){
     } else if (strcmp(str, b->key) < 0){
         return bst_search(b->left,str);
     }
+    return 0;
 }
-
