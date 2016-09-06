@@ -1,7 +1,7 @@
 #ifndef BST_H_
 #define BST_H_
 
-typedef struct * bst_node bst;
+typedef struct bst_node *bst;
 /*
 bst b = bst_new();
 struct bstnode *b = bst_new();
