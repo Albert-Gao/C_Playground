@@ -13,53 +13,49 @@ struct bst_node {
 bst bst_delete(bst b, char *str){
     if (b==NULL){
         /*Deleting a not-exist key should have no effect. */
+        return b;
     } else if (strcmp(str, b->key) < 0){
-        /*If the key is smaller, delete the key from the left subtree.*/
+        /*If key is smaller, delete it from the left subtree.*/
         b->left = bst_delete(b->left, str);
     } else if (strcmp(str, b->key) > 0){
-        /*If the key is larger, delete the key from the right subtree.*/
+        /*If key is larger, delete it from the right subtree.*/
         b->right = bst_delete(b->right, str);
     } else {
-        /*If the key match the current node, splice out the node.*/
+        /*If the key match the current node, remove the node.*/
         if (b->left == NULL && b->right == NULL){
             /*if it is a leaf*/
             free(b->key);
-            bst_free(b);
+            free(b);
             b = NULL;
         } else if (b->left != NULL && b->right == NULL){
-            /*if only one child(left)*/
-            bst temp = b->left;
-            free(b->key);
-            free(b);
-            b = temp;
-
+            /*if only one child(left), move left up*/
+            bst temp = b;
+            b = b->left;
+            free(temp->key);
+            free(temp);
         } else if (b->left == NULL && b->right != NULL){
-            /*if only one child(right)*/
-            bst temp = b->right;
-            free(b->key);
-            free(b);
-            b = temp;
+            /*if only one child(right), move right up*/
+            bst temp = b;
+            b = b->right;
+            free(temp->key);
+            free(temp);
         } else {
-            /*if node has two children*/
-            bst temp = b->right;
-            while(temp->left!=NULL){
-                temp = temp->left;
+            /*if node has two children, copy the min_right then move right up*/
+            bst min_right = b->right;
+            while(min_right->left!=NULL){
+                min_right = min_right->left;
             }
-            strcpy(b->key, temp->key);
-            temp = bst_delete(temp, temp->key);
+            strcpy(b->key, min_right->key);
+            b->right = bst_delete(b->right, min_right->key);
         }
     }
     return b;
 }
 
 bst bst_free(bst b){
-    free(b->key);
-    if (b->left!=NULL){
-        bst_free(b->left);
-    }
-    if (b->right!=NULL) {
-        bst_free(b->right);
-    }
+    free( b->key );
+    if (b->left != NULL) bst_free(b->left);
+    if (b->right != NULL) bst_free(b->right);
     free(b);
     return b;
 }
@@ -90,20 +86,14 @@ bst bst_new(){
 }
 
 void bst_preorder(bst b, void f(char *str)){
-    if (b == NULL){
-        return;
-    }
-
+    if (b == NULL) return;
     f(b->key);
     bst_preorder(b->left, f);
     bst_preorder(b->right, f);
 }
 
 void bst_inorder(bst b, void f(char *str)){
-    if (b == NULL){
-        return;
-    }
-
+    if (b == NULL) return;
     bst_inorder(b->left, f);
     f(b->key);
     bst_inorder(b->right, f);
