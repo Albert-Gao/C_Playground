@@ -26,7 +26,7 @@ int main(void){
 
     printf("Is there a -D- ? ");
     printf("%d\n",bst_search(tree, "D"));
-    
+
     printf("Is there a -B- ? ");
     printf("%d\n",bst_search(tree, "B"));
 
@@ -64,15 +64,15 @@ int main(void){
     tree = bst_delete(tree1,"B");
     bst_inorder(tree1,print_key);
     printf("\n\n");
-    
+
     printf("Delete -D-:(A B C E F G)\n");
     tree = bst_delete(tree2,"B");
     bst_inorder(tree2,print_key);
     printf("\n\n");
 
-    bst_free(tree);
-    bst_free(tree1);
-    bst_free(tree2);
+    tree = bst_free(tree);
+    tree1 = bst_free(tree1);
+    tree2 = bst_free(tree2);
 
     return EXIT_SUCCESS;
 }

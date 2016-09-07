@@ -54,10 +54,10 @@ bst bst_delete(bst b, char *str){
 
 bst bst_free(bst b){
     free(b->key);
-    if (b->left){
+    if (b->left!=NULL){
         bst_free(b->left);
     }
-    if (b->right) {
+    if (b->right!=NULL) {
         bst_free(b->right);
     }
     free(b);
@@ -68,6 +68,8 @@ bst bst_insert(bst b, char *str){
     /* create a new tree */
     if (b == NULL){
         b = emalloc(sizeof *b);
+        b->left = NULL;
+        b->right = NULL;
         b->key = emalloc((strlen(str)+1)*sizeof str[0]);
         strcpy(b->key,str);
     } else if (strcmp(b->key,str)==0){
