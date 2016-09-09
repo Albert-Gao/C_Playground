@@ -9,7 +9,7 @@
     stats - number of collisions, filled sequentially and indexed by num_keys
 
   Uses mylib: memory allocation and getword functions.
-                                    
+
  */
 
 
@@ -25,7 +25,7 @@ struct htablerec {
     int num_keys;
     int *freq;
     int *stats;
-    char **items;        
+    char **items;
     hashing_t method;
 };
 
@@ -35,16 +35,16 @@ struct htablerec {
  * Creates a new instance of a Hash table with a default size of 113.
  *
  * @param capacity as maximum hash table size. Assumes if no capacity set, 0 passed in.
- * @param type as type of hash function used to store keys. 
- 
- * @return htable an empty hash table of size capacity. 
+ * @param type as type of hash function used to store keys.
+
+ * @return htable an empty hash table of size capacity.
  */
 
 htable htable_new(int capacity, hashing_t type){
     int i;
     htable result = emalloc(sizeof * result);
 
-    result-> capacity = capacity;   
+    result-> capacity = capacity;
     result -> num_keys = 0;
     result -> method = type;
 
@@ -91,7 +91,7 @@ static unsigned int word_to_int(char *word){
 /********************************************************************************/
 /**
  * Creates a step size used for hashing.
- * 
+ *
  * @param h the hash table to use capacity value.
  * @param i_key the current integer key value used to calculate the step size for double hashing.
  *
@@ -144,10 +144,12 @@ void htable_print_entire_table(htable h, FILE *stream){
 void htable_free(htable h){
 
     int i;
-    
+
     /* Free the char strings*/
-    for (i = 0; i < h->capacity; i++){       
-        free(h->items[i]);
+    for (i = 0; i < h->capacity; i++){
+        if ( h->items[i] != NULL ) {
+            free(h->items[i]);
+        }
     }
 
     /* Free the arrays */
@@ -177,20 +179,20 @@ int htable_insert(htable h, char *str){
     int key = word_to_int(str)%h->capacity;
     int steps = htable_step(h, word_to_int(str));
     int collisions = 0;
-    
-    
+
+
     while ( h->items[key] != NULL &&
             strcmp(str, h->items[key]) != 0 &&
             collisions < h->capacity){
-        
+
         key  = key + steps;
         if (key >= h->capacity){
             key = key - h->capacity;
         }
         collisions++;
     }
-    
-    
+
+
     if (h->items[key] == NULL){
         h->items[key] = emalloc((strlen(str)+1)*sizeof h->items[0][0]);
         strcpy(h->items[key], str);
@@ -207,7 +209,7 @@ int htable_insert(htable h, char *str){
         }
     }
  }
-/*************************************************************************/ 
+/*************************************************************************/
 /**
  *  Search’s for a word in the hash table.
  *  Uses htable_step and word_to_int to find step size and key for searching.
@@ -310,4 +312,3 @@ void htable_print_stats(htable h, FILE *stream, int num_stats) {
     }
     fprintf(stream, "-----------------------------------------------------\n\n");
 }
-

@@ -19,6 +19,7 @@ htable htable_new(int capacity, hashing_t hmethod){
     result->capacity = 113;
     result->capacity = capacity;
     result->method = hmethod;
+    result->num_keys = 0;
     result->keys = emalloc(result->capacity * sizeof result->keys[0]);
     result->frequencies = emalloc(result->capacity * sizeof result->frequencies[0]);
     result->stats = emalloc(result->capacity*sizeof result->stats[0]);
@@ -31,8 +32,15 @@ htable htable_new(int capacity, hashing_t hmethod){
 }
 
 void htable_free(htable h){
+    for (unsigned int i=0; i < h->capacity; i++){
+        if ( h->keys[i] != NULL ){
+            free(h->keys[i]);
+        }
+    }
+
     free(h->keys);
     free(h->frequencies);
+    free(h->stats);
     free(h);
 }
 

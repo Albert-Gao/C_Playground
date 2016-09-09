@@ -68,13 +68,13 @@ bst bst_insert(bst b, char *str){
         b->right = NULL;
         b->key = emalloc((strlen(str)+1)*sizeof str[0]);
         strcpy(b->key,str);
-    } else if (strcmp(b->key,str)==0){
+    } else if (strcmp(b->key,str) == 0){
         /* we already have this value; */
         return NULL;
-    } else if (strcmp(str,b->key)>0){
+    } else if (strcmp(str,b->key) > 0){
         /*the new value is greater than the old*/
         b->right = bst_insert(b->right,str);
-    } else if (strcmp(str,b->key)<0){
+    } else if (strcmp(str,b->key) < 0){
         /*the new value is less then the old*/
         b->left = bst_insert(b->left,str);
     }
