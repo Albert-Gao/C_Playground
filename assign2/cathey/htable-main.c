@@ -82,7 +82,7 @@ int main (int argc, char *argv[]){
 
     /* Default values which are changed by command line switch statement. */
     hashing_t type = LINEAR_P;
-    int size = 113;
+    int size = 0;
     int snapshots = 10;
 
     /* Variables used for dictionary. */
@@ -153,14 +153,14 @@ int main (int argc, char *argv[]){
         search_start = clock();
         while (getword(word, sizeof word, filename) != EOF){
             if (htable_search(h, word) == 0){
-                printf("  %s\n", word);
+                printf("%s\n", word);
                 unknown++;
             }
         }
         search_end = clock();
         fclose(filename);
 
-        fprintf(stderr, "Fill time    : %7f\nSearch time  : %7f\nUnknown words  = %d\n", \
+        fprintf(stderr, "Fill time   : %7f\nSearch time : %7f\nUnknown words   = %d\n", \
                 (fill_end-fill_start)/(double)CLOCKS_PER_SEC,   \
                 (search_end-search_start)/(double)CLOCKS_PER_SEC, unknown);
     }

@@ -1,50 +1,49 @@
 /**
-  HASH TABLE ADT
-    Stores a collection of strings using either a primary or double has function.
-
-    capacity - Maximum number of keys.
-    num_keys - Current number of keys stored.
-    freq - array of integers to store number of occurrences of each word (not case sensitive)
-    items - array of keys (strings)
-    stats - number of collisions, filled sequentially and indexed by num_keys
-
-  Uses mylib: memory allocation and getword functions.
-
+ * HASH TABLE ADT
+ * Stores and manages a collection of strings using either a linear probing or double hash function.
+ * Uses htable: definitions of htable data structure
+ * Uses mylib: memory allocation and getword functions.
+ * @Author foxre274 gaoha773 scrca599
+ * @Date 10/Sep/2016
  */
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "htable.h"
 #include "mylib.h"
 
+#define DEFAULT_CAPACITY 113
 
 struct htablerec {
-    int capacity;
-    int num_keys;
-    int *freq;
-    int *stats;
-    char **items;
-    hashing_t method;
+    unsigned int capacity; /* Maximum number of keys. */
+    int num_keys; /* Current number of keys stored.  */
+    int *freq; /* array of integers to store number of occurrences of each word (not case sensitive)  */
+    int *stats; /*  number of collisions, filled sequentially and indexed by num_keys  */
+    char **items; /* array of keys (strings)  */
+    hashing_t method; /* the type of the hash table  */
 };
 
 
-/*******************************************************************************/
 /**
- * Creates a new instance of a Hash table with a default size of 113.
+ * Creates a new instance of a Hash table with a default size of 113 if 
+ * no capacity passed which means the capacity = 0.
  *
- * @param capacity as maximum hash table size. Assumes if no capacity set, 0 passed in.
- * @param type as type of hash function used to store keys.
+ * @param capacity as maximum hash table size. 
+ * @param type the type of the hash function used to store keys.
 
  * @return htable an empty hash table of size capacity.
  */
 
 htable htable_new(int capacity, hashing_t type){
-    int i;
+    unsigned int i;
     htable result = emalloc(sizeof * result);
-
-    result-> capacity = capacity;
+    
+    if (capacity == 0){
+        result-> capacity = DEFAULT_CAPACITY;
+    } else {
+        result-> capacity = capacity;    
+    }
+    
     result -> num_keys = 0;
     result -> method = type;
 
@@ -59,11 +58,14 @@ htable htable_new(int capacity, hashing_t type){
     }
     return result;
 }
-/**/
 
+/**
+ * Print the items in the hash table
+ * @param h the hash table we want to print
+ * @param f the function we need to call when iterate the hash table
+ */ 
 void htable_print(htable h, void f()){
-
-    int i;
+    unsigned int i;
     for (i = 0; i < h->capacity; i++){
         if (h->items[i] != NULL){
             f(h->freq[i], h->items[i]);
@@ -71,24 +73,21 @@ void htable_print(htable h, void f()){
     }
 }
 
-/********************************************************************************/
 /**
  * Creates an integer key from a string.
  * Used for linear and double hashing.
  *
- * @param string word used for key calculations.
- * @return unsigned integer representing table location for word.
+ * @param word a word used for key calculations.
+ * @return unsigned integer representing for the word.
  */
-
 static unsigned int word_to_int(char *word){
     unsigned int result = 0;
-    while (*word !='\0') {
+    while (*word != '\0') {
         result = (*word++ +31 *result);
     }
     return result;
 }
 
-/********************************************************************************/
 /**
  * Creates a step size used for hashing.
  *
@@ -98,22 +97,20 @@ static unsigned int word_to_int(char *word){
  * @return step size which is 1 if hashing method is linear probing otherwise a calculated
  * step size using i_key is returned.
  */
-
 static unsigned int htable_step(htable h, unsigned int i_key){
 
-    if (h->method == LINEAR_P){
+    if ( h->method == LINEAR_P ){
         return 1;
-    }else {
-        return 1 + (i_key% (h->capacity -1));
+    } else {
+        return 1 + (i_key % ( h->capacity -1 ));
     }
 }
 
-/********************************************************************************/
 /**
- * Print the Hash table Contents in the form of a table:
- *   Pos  Freq  Stats  Word
- * ________________________________________
- *
+ * Print the Hash table Contents in the form of a 
+ * table with the following columns:
+ * Pos  Freq  Stats  Word
+ * 
  * @li Pos - hash table position.
  * @li Freq - how many occurrences of the word occurred in the text at the given position.
  * @li Stats - number of collisions which occurred, in sequential order.
@@ -121,20 +118,24 @@ static unsigned int htable_step(htable h, unsigned int i_key){
  *
  * @param h hash table.
  * @param FILE stream to output information to.
-
  */
-
 void htable_print_entire_table(htable h, FILE *stream){
-    int i;
+    unsigned int i;
+    char *word;
 
     fprintf(stream, "  Pos  Freq  Stats  Word\n");
     fprintf(stream,"________________________________________\n");
     for(i = 0; i < h->capacity; i++){
-        fprintf(stream,"%5d %5d %5d   %s\n",i, h->freq[i], h->stats[i], h->items[i]);
+        if ( h->items[i] == NULL ) {
+            word = "\0";
+        }
+        else {
+            word = h->items[i];
+        }
+        fprintf(stream,"%5d %5d %5d   %s\n",i, h->freq[i], h->stats[i], word);
     }
 }
 
-/*****************************************************************************/
 /**
  * Deallocates memory which was initially allocated for the objects construction.
  *
@@ -143,7 +144,7 @@ void htable_print_entire_table(htable h, FILE *stream){
 
 void htable_free(htable h){
 
-    int i;
+    unsigned int i;
 
     /* Free the char strings*/
     for (i = 0; i < h->capacity; i++){
@@ -178,20 +179,17 @@ int htable_insert(htable h, char *str){
 
     unsigned int key = word_to_int(str)%h->capacity;
     int steps = htable_step(h, word_to_int(str));
-    int collisions = 0;
-
+    unsigned int collisions = 0;
 
     while ( h->items[key] != NULL &&
             strcmp(str, h->items[key]) != 0 &&
             collisions < h->capacity){
-
         key  = key + steps;
         if (key >= h->capacity){
             key = key - h->capacity;
         }
         collisions++;
     }
-
 
     if (h->items[key] == NULL){
         h->items[key] = emalloc((strlen(str)+1)*sizeof h->items[0][0]);
@@ -224,8 +222,8 @@ int htable_insert(htable h, char *str){
 
 int htable_search(htable h, char *str){
     int step = htable_step(h, word_to_int(str));
-    int check = word_to_int(str)%h->capacity;
-    int collisions = 0;
+    unsigned int check = word_to_int(str)%h->capacity;
+    unsigned int collisions = 0;
 
     while ( h->items[check] != NULL &&
             strcmp(str, h->items[check]) !=0 &&
@@ -280,7 +278,6 @@ static void print_stats_line(htable h, FILE *stream, int percent_full) {
     }
 }
 
-/***********************************************************************/
 /**
  * Prints out a table showing what the following attributes were like
  * at regular intervals (as determined by num_stats) while the
