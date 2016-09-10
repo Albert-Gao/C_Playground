@@ -9,24 +9,24 @@
 
 static void print_usage(char* myprog) {
 
-   char* options =  "\n\n"
-                    "Perform various operations using a hash table.  By default, words are\n"
-                    "read from stdin and added to the hash table, before being printed out\n"
-                    "alongside their frequencies to stdout.\n\n"
+    char* options =  "\n\n"
+        "Perform various operations using a hash table.  By default, words are\n"
+        "read from stdin and added to the hash table, before being printed out\n"
+        "alongside their frequencies to stdout.\n\n"
 
-                    " -c FILENAME  \tCheck spelling of words in FILENAME using words\n"
-                                    "\t\tfrom stdin as dictionary.  Print unknown words to\n"
-                                    "\t\tstdout, timing info & count to stderr (ignore -p)\n";
+        " -c FILENAME  \tCheck spelling of words in FILENAME using words\n"
+        "\t\tfrom stdin as dictionary.  Print unknown words to\n"
+        "\t\tstdout, timing info & count to stderr (ignore -p)\n";
 
-   char* options1 = " -d            \tUse double hashing (linear probing is the default)\n"
-                    " -e            \tDisplay entire contents of hash table on stderr\n"
-                    " -p            \tPrint stats info instead of frequencies & words\n"
-                    " -s SNAPSHOTS \tShow SNAPSHOTS stats snapshots (if -p is used)\n"
-                    " -t TABLESIZE \tUse the first prime >= TABLESIZE as htable size\n\n"
+    char* options1 = " -d            \tUse double hashing (linear probing is the default)\n"
+        " -e            \tDisplay entire contents of hash table on stderr\n"
+        " -p            \tPrint stats info instead of frequencies & words\n"
+        " -s SNAPSHOTS \tShow SNAPSHOTS stats snapshots (if -p is used)\n"
+        " -t TABLESIZE \tUse the first prime >= TABLESIZE as htable size\n\n"
 
-                    " -h           \tDisplay this message\n";
+        " -h           \tDisplay this message\n";
 
-   fprintf(stderr, "Usage: %s [OPTION]...<STDIN> %s%s\n",myprog, options, options1);
+    fprintf(stderr, "Usage: %s [OPTION]...<STDIN> %s%s\n",myprog, options, options1);
 
 }
 
@@ -36,7 +36,7 @@ static void print_info(int freq, char *word){
 }
 
 static int is_prime(int n){
- /* 0 is false 1 is true. */
+    /* 0 is false 1 is true. */
 
     int i = 5;
 
@@ -82,7 +82,7 @@ int main (int argc, char *argv[]){
 
     /* Default values which are changed by command line switch statement. */
     hashing_t type = LINEAR_P;
-    int size = 113;
+    int size = 0;
     int snapshots = 10;
 
     /* Variables used for dictionary. */
@@ -153,14 +153,14 @@ int main (int argc, char *argv[]){
         search_start = clock();
         while (getword(word, sizeof word, filename) != EOF){
             if (htable_search(h, word) == 0){
-                printf("  %s\n", word);
+                printf("%s\n", word);
                 unknown++;
             }
         }
         search_end = clock();
         fclose(filename);
 
-        fprintf(stderr, "Fill time    : %7f\nSearch time  : %7f\nUnknown words  = %d\n", \
+        fprintf(stderr, "Fill time   : %7f\nSearch time : %7f\nUnknown words   = %d\n", \
                 (fill_end-fill_start)/(double)CLOCKS_PER_SEC,   \
                 (search_end-search_start)/(double)CLOCKS_PER_SEC, unknown);
     }

@@ -12,20 +12,18 @@ static void print_usage(char* myprog) {
     "Perform various operations using a binary tree.  By default, words\n"
     "are read from stdin and added to the tree, before being printed out\n"
     "alongside their frequencies to stdout.\n\n"
-    " -c FILENAME \tCheck spelling of words in FILENAME using words\n"
-    "\t\tread from stdin as the dictionary.  Print timing\n"
-    "\t\tinfo & unknown words to stderr (ignore -d & -o)\n";
+    " -c FILENAME  Check spelling of words in FILENAME using words\n"
+    " \t      read from stdin as the dictionary.  Print timing\n"
+    " \t      info & unknown words to stderr (ignore -d & -o)\n";
 
-char* options1 = "-d\t\t Only print the tree depth (ignore -o)\n"
-    "-f FILENAME \tWrite DOT output to FILENAME (if -o given)\n"
-    "-o\t\tOutput the tree in DOT form to file 'tree-view.dot'\n"
-    "-r\t\tMake the tree an RBT (the default is a BST)\n\n"
-
-    "-h\t\t Print this message\n";
+char* options1 = " -d\t      Only print the tree depth (ignore -o)\n"
+    " -f FILENAME  Write DOT output to FILENAME (if -o given)\n"
+    " -o\t      Output the tree in DOT form to file 'tree-view.dot'\n"
+    " -r\t      Make the tree an RBT (the default is a BST)\n\n"
+    " -h\t      Print this message\n";
 
 
     fprintf(stderr, "Usage: %s [OPTION]... <STDIN> %s%s\n",myprog, options, options1);
-
 }
 
 
@@ -118,7 +116,7 @@ int main (int argc, char *argv[]){
         search_start = clock();
         while (getword(word, sizeof word, filename) != EOF){
             if (tree_search(h, word) == 0){
-                printf("  %s\n", word);
+                printf("%s\n", word);
                 unknown++;
             }
         }
@@ -126,7 +124,7 @@ int main (int argc, char *argv[]){
         search_end = clock();
         fclose(filename);
 
-        fprintf(stderr, "Fill time    : %7f\nSearch time  : %7f\nUnknown words  = %d\n", \
+        fprintf(stderr, "Fill time     : %7f\nSearch time   : %7f\nUnknown words = %d\n", \
                 (fill_end-fill_start)/(double)CLOCKS_PER_SEC,           \
                 (search_end-search_start)/(double)CLOCKS_PER_SEC, unknown);
     }
@@ -140,5 +138,3 @@ int main (int argc, char *argv[]){
     tree_free(h);
     return EXIT_SUCCESS;
 }
-
-
