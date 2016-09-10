@@ -14,19 +14,19 @@ static void print_usage(char* myprog) {
                     "read from stdin and added to the hash table, before being printed out\n"
                     "alongside their frequencies to stdout.\n\n"
 
-                    " -c FILENAME  \tCheck spelling of words in FILENAME using words\n"
-                                    "\t\tfrom stdin as dictionary.  Print unknown words to\n"
-                                    "\t\tstdout, timing info & count to stderr (ignore -p)\n";
+                    " -c FILENAME  Check spelling of words in FILENAME using words\n"
+                                    "\t      from stdin as dictionary.  Print unknown words to\n"
+                                    "\t      stdout, timing info & count to stderr (ignore -p)\n";
 
-   char* options1 = " -d            \tUse double hashing (linear probing is the default)\n"
-                    " -e            \tDisplay entire contents of hash table on stderr\n"
-                    " -p            \tPrint stats info instead of frequencies & words\n"
-                    " -s SNAPSHOTS \tShow SNAPSHOTS stats snapshots (if -p is used)\n"
-                    " -t TABLESIZE \tUse the first prime >= TABLESIZE as htable size\n\n"
+   char* options1 = " -d           Use double hashing (linear probing is the default)\n"
+                    " -e           Display entire contents of hash table on stderr\n"
+                    " -p           Print stats info instead of frequencies & words\n"
+                    " -s SNAPSHOTS Show SNAPSHOTS stats snapshots (if -p is used)\n"
+                    " -t TABLESIZE Use the first prime >= TABLESIZE as htable size\n\n"
 
-                    " -h           \tDisplay this message\n";
+                    " -h           Display this message\n";
 
-   fprintf(stderr, "Usage: %s [OPTION]...<STDIN> %s%s\n",myprog, options, options1);
+   fprintf(stderr, "Usage: %s [OPTION]... <STDIN> %s%s\n",myprog, options, options1);
 
 }
 
@@ -160,7 +160,7 @@ int main (int argc, char *argv[]){
         search_end = clock();
         fclose(filename);
 
-        fprintf(stderr, "Fill time   : %7f\nSearch time : %7f\nUnknown words   = %d\n", \
+        fprintf(stderr, "Fill time     : %7f\nSearch time   : %7f\nUnknown words = %d\n", \
                 (fill_end-fill_start)/(double)CLOCKS_PER_SEC,   \
                 (search_end-search_start)/(double)CLOCKS_PER_SEC, unknown);
     }
