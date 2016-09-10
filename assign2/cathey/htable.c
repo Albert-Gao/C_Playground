@@ -176,7 +176,7 @@ void htable_free(htable h){
 
 int htable_insert(htable h, char *str){
 
-    int key = word_to_int(str)%h->capacity;
+    unsigned int key = word_to_int(str)%h->capacity;
     int steps = htable_step(h, word_to_int(str));
     int collisions = 0;
 
