@@ -141,7 +141,6 @@ void htable_print_entire_table(htable h, FILE *stream){
  *
  * @param h table to free.
  */
-
 void htable_free(htable h){
 
     unsigned int i;
@@ -161,11 +160,16 @@ void htable_free(htable h){
     /* Free struct */
     free(h);
 }
-/****************************************************************************/
+
 /**
  * Inserts a word into a hash table.
  * Uses word_to_int and h_table_step to work our key and step size.
  * The word is inserted into the first available position.
+ * 
+ * First we use a while loop to find the proper position for the new word
+ * If the position is already occupied, we will increase the collisions and increase the index
+ * 
+ * Then we will insert word to this index, otherwise increase the frequency.
  *
  * @param h hash table to insert word into.
  * @param str word to insert into hash table.
@@ -174,7 +178,6 @@ void htable_free(htable h){
  * of word occurrence if word is already in the table or 1 if a new
  * word and placed into an empty cell.
  */
-
 int htable_insert(htable h, char *str){
 
     unsigned int key = word_to_int(str)%h->capacity;
@@ -206,10 +209,15 @@ int htable_insert(htable h, char *str){
             return 0;
         }
     }
+<<<<<<< HEAD
 }
 /*************************************************************************/
+=======
+ }
+
+>>>>>>> a2dbc62d6db86b0d7040cc1c0caa69e8afdadc3a
 /**
- *  Search’s for a word in the hash table.
+ *  Search for a word in the hash table.
  *  Uses htable_step and word_to_int to find step size and key for searching.
  *
  * @para h hash table to be searched.
@@ -219,7 +227,6 @@ int htable_insert(htable h, char *str){
  * showing the word doesn't exit. (Prime sized table should ensure all cells in table visited).
  * If the word is found, the number of occurrences is returned.
  */
-
 int htable_search(htable h, char *str){
     int step = htable_step(h, word_to_int(str));
     unsigned int check = word_to_int(str)%h->capacity;
@@ -228,7 +235,6 @@ int htable_search(htable h, char *str){
     while ( h->items[check] != NULL &&
             strcmp(str, h->items[check]) !=0 &&
             collisions < h->capacity){
-
 
         check  = check + step;
         if (check >= h->capacity){
@@ -243,7 +249,7 @@ int htable_search(htable h, char *str){
         return h->freq[check];
     }
 }
-/***********************************************************************/
+
 /**
  * Prints out a line of data from the hash table to reflect the state
  * the table was in when it was a certain percentage full.
@@ -294,7 +300,6 @@ static void print_stats_line(htable h, FILE *stream, int percent_full) {
  * @param stream the stream to send output to.
  * @param num_stats the maximum number of statistical snapshots to print.
  */
-
 void htable_print_stats(htable h, FILE *stream, int num_stats) {
 
     int i;
