@@ -14,7 +14,6 @@ static void print_usage(char* myprog) {
         "read from stdin and added to the hash table, before being printed out\n"
         "alongside their frequencies to stdout.\n\n"
 
-<<<<<<< HEAD
         " -c FILENAME  \tCheck spelling of words in FILENAME using words\n"
         "\t\tfrom stdin as dictionary.  Print unknown words to\n"
         "\t\tstdout, timing info & count to stderr (ignore -p)\n";
@@ -28,21 +27,6 @@ static void print_usage(char* myprog) {
         " -h           \tDisplay this message\n";
 
     fprintf(stderr, "Usage: %s [OPTION]...<STDIN> %s%s\n",myprog, options, options1);
-=======
-                    " -c FILENAME  Check spelling of words in FILENAME using words\n"
-                                    "\t      from stdin as dictionary.  Print unknown words to\n"
-                                    "\t      stdout, timing info & count to stderr (ignore -p)\n";
-
-   char* options1 = " -d           Use double hashing (linear probing is the default)\n"
-                    " -e           Display entire contents of hash table on stderr\n"
-                    " -p           Print stats info instead of frequencies & words\n"
-                    " -s SNAPSHOTS Show SNAPSHOTS stats snapshots (if -p is used)\n"
-                    " -t TABLESIZE Use the first prime >= TABLESIZE as htable size\n\n"
-
-                    " -h           Display this message\n";
-
-   fprintf(stderr, "Usage: %s [OPTION]... <STDIN> %s%s\n",myprog, options, options1);
->>>>>>> a2dbc62d6db86b0d7040cc1c0caa69e8afdadc3a
 
 }
 
@@ -176,11 +160,7 @@ int main (int argc, char *argv[]){
         search_end = clock();
         fclose(filename);
 
-<<<<<<< HEAD
         fprintf(stderr, "Fill time   : %7f\nSearch time : %7f\nUnknown words   = %d\n", \
-=======
-        fprintf(stderr, "Fill time     : %7f\nSearch time   : %7f\nUnknown words = %d\n", \
->>>>>>> a2dbc62d6db86b0d7040cc1c0caa69e8afdadc3a
                 (fill_end-fill_start)/(double)CLOCKS_PER_SEC,   \
                 (search_end-search_start)/(double)CLOCKS_PER_SEC, unknown);
     }

@@ -1,129 +1,249 @@
+/**
+ * HASH TABLE ADT
+ * Stores and manages a collection of strings using either a linear probing or double hash function.
+ * Uses htable: definitions of htable data structure
+ * Uses mylib: memory allocation and getword functions.
+ * @Author foxre274 gaoha773 scrca599
+ * @Date 10/Sep/2016
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "htable.h"
 #include "mylib.h"
 
-struct htable {
-    unsigned int capacity;
-    int num_keys;
-    char **keys;
-    unsigned int *frequencies;
-    int *stats;
-    hashing_t method;
+#define DEFAULT_CAPACITY 113
+
+struct htablerec {
+    unsigned int capacity; /* Maximum number of keys. */
+    int num_keys; /* Current number of keys stored.  */
+    int *freq; /* array of integers to store number of occurrences of each word (not case sensitive)  */
+    int *stats; /*  number of collisions, filled sequentially and indexed by num_keys  */
+    char **items; /* array of keys (strings)  */
+    hashing_t method; /* the type of the hash table  */
 };
 
-htable htable_new(int capacity, hashing_t hmethod){
+
+/**
+ * Creates a new instance of a Hash table with a default size of 113 if 
+ * no capacity passed which means the capacity = 0.
+ *
+ * @param capacity as maximum hash table size. 
+ * @param type the type of the hash function used to store keys.
+
+ * @return htable an empty hash table of size capacity.
+ */
+
+htable htable_new(int capacity, hashing_t type){
     unsigned int i;
     htable result = emalloc(sizeof * result);
-    result->capacity = 113;
-    result->capacity = capacity;
-    result->method = hmethod;
-    result->num_keys = 0;
-    result->keys = emalloc(result->capacity * sizeof result->keys[0]);
-    result->frequencies = emalloc(result->capacity * sizeof result->frequencies[0]);
-    result->stats = emalloc(result->capacity*sizeof result->stats[0]);
+    
+    if (capacity == 0){
+        result-> capacity = DEFAULT_CAPACITY;
+    } else {
+        result-> capacity = capacity;    
+    }
+    
+    result -> num_keys = 0;
+    result -> method = type;
+
+    result -> freq = emalloc(result->capacity * sizeof result->freq[0]);
+    result -> items = emalloc(result->capacity * sizeof (char*));
+    result -> stats = emalloc(result->capacity * sizeof result->stats[0]);
+
     for (i = 0; i < result->capacity; i++){
-        result->stats[i] = 0;
-        result->frequencies[i] = 0;
-        result->keys[i] = NULL;
+        result -> freq[i] = 0;
+        result -> stats[i] = 0;
+        result->items[i] = NULL;
     }
     return result;
 }
 
-void htable_free(htable h){
-    for (unsigned int i=0; i < h->capacity; i++){
-        if ( h->keys[i] != NULL ){
-            free(h->keys[i]);
+/**
+ * Print the items in the hash table
+ * @param h the hash table we want to print
+ * @param f the function we need to call when iterate the hash table
+ */ 
+void htable_print(htable h, void f()){
+    unsigned int i;
+    for (i = 0; i < h->capacity; i++){
+        if (h->items[i] != NULL){
+            f(h->freq[i], h->items[i]);
         }
     }
-
-    free(h->keys);
-    free(h->frequencies);
-    free(h->stats);
-    free(h);
 }
 
-static unsigned int htable_step(htable h, unsigned int i_key) {
-    if (h->method == DOUBLE_H) {
-       return 1 + (i_key % (h->capacity - 1));
-    }
-    return 1;
-}
-
-static unsigned int htable_word_to_int(char *word) {
+/**
+ * Creates an integer key from a string.
+ * Used for linear and double hashing.
+ *
+ * @param word a word used for key calculations.
+ * @return unsigned integer representing for the word.
+ */
+static unsigned int word_to_int(char *word){
     unsigned int result = 0;
     while (*word != '\0') {
-       result = (*word++ + 31 * result);
+        result = (*word++ +31 *result);
     }
     return result;
 }
 
-int htable_insert(htable h, char *str){
-    unsigned int convert = htable_word_to_int(str);
-    unsigned int index = convert % h->capacity;
-    unsigned int step = htable_step(h, convert);
-    unsigned int i = 0;
-    unsigned int collision = 0;
-    if (h->keys[index] == NULL){
-        h->keys[index] = emalloc((strlen(str) + 1) * sizeof str[0]);
-        strcpy(h->keys[index], str);
-        h->frequencies[index] = 1;
+/**
+ * Creates a step size used for hashing.
+ *
+ * @param h the hash table to use capacity value.
+ * @param i_key the current integer key value used to calculate the step size for double hashing.
+ *
+ * @return step size which is 1 if hashing method is linear probing otherwise a calculated
+ * step size using i_key is returned.
+ */
+static unsigned int htable_step(htable h, unsigned int i_key){
+
+    if ( h->method == LINEAR_P ){
         return 1;
-    } else if (strcmp(str, h->keys[index])==0){
-        h->frequencies[index]++;
-        return h->frequencies[index];
-    } else if (strcmp(str, h->keys[index])!=0){
-        i = (index + step)%h->capacity;
-        while (i != index) {
-            /* if found a open place, insert it */
-            if (h->keys[i] == NULL){
-                h->keys[i] = emalloc((strlen(str) + 1) * sizeof str[0]);
-                strcpy(h->keys[i], str);
-                h->frequencies[i] = 1;
-                h->stats[i] = collision;
-                h->num_keys++;
-                return 1;
-            }
+    } else {
+        return 1 + (i_key % ( h->capacity -1 ));
+    }
+}
 
-            /* if found the string, increment the frequency and return */
-            if (strcmp(str,h->keys[i])==0){
-                h->frequencies[i]++;
-                return h->frequencies[i];
-            }
+/**
+ * Print the Hash table Contents in the form of a 
+ * table with the following columns:
+ * Pos  Freq  Stats  Word
+ * 
+ * @li Pos - hash table position.
+ * @li Freq - how many occurrences of the word occurred in the text at the given position.
+ * @li Stats - number of collisions which occurred, in sequential order.
+ * @li Word - Word stored in hash table at the given position.
+ *
+ * @param h hash table.
+ * @param FILE stream to output information to.
+ */
+void htable_print_entire_table(htable h, FILE *stream){
+    unsigned int i;
+    char *word;
 
-            /* capacity gained, table full, return 0 */
-            if (h->capacity == i){
-                return 0;
-            }
+    fprintf(stream, "  Pos  Freq  Stats  Word\n");
+    fprintf(stream,"________________________________________\n");
+    for(i = 0; i < h->capacity; i++){
+        if ( h->items[i] == NULL ) {
+            word = "\0";
+        }
+        else {
+            word = h->items[i];
+        }
+        fprintf(stream,"%5d %5d %5d   %s\n",i, h->freq[i], h->stats[i], word);
+    }
+}
 
-            i=(i+step)%h->capacity;
-            collision += 1;
+/**
+ * Deallocates memory which was initially allocated for the objects construction.
+ *
+ * @param h table to free.
+ */
+
+void htable_free(htable h){
+
+    unsigned int i;
+
+    /* Free the char strings*/
+    for (i = 0; i < h->capacity; i++){
+        if ( h->items[i] != NULL ) {
+            free(h->items[i]);
         }
     }
-    return 0;
+
+    /* Free the arrays */
+    free (h->freq);
+    free (h->items);
+    free (h->stats);
+
+    /* Free struct */
+    free(h);
 }
+/****************************************************************************/
+/**
+ * Inserts a word into a hash table.
+ * Uses word_to_int and h_table_step to work our key and step size.
+ * The word is inserted into the first available position.
+ *
+ * @param h hash table to insert word into.
+ * @param str word to insert into hash table.
+ *
+ * @return 0 if table has no available space for a new word (full), otherwise frequency
+ * of word occurrence if word is already in the table or 1 if a new
+ * word and placed into an empty cell.
+ */
+
+int htable_insert(htable h, char *str){
+
+    unsigned int key = word_to_int(str)%h->capacity;
+    int steps = htable_step(h, word_to_int(str));
+    unsigned int collisions = 0;
+
+    while ( h->items[key] != NULL &&
+            strcmp(str, h->items[key]) != 0 &&
+            collisions < h->capacity){
+        key  = key + steps;
+        if (key >= h->capacity){
+            key = key - h->capacity;
+        }
+        collisions++;
+    }
+
+    if (h->items[key] == NULL){
+        h->items[key] = emalloc((strlen(str)+1)*sizeof h->items[0][0]);
+        strcpy(h->items[key], str);
+        h->stats[h->num_keys] = collisions;
+        h->num_keys++;
+        h->freq[key]++;
+        return 1;
+    } else {
+        if (strcmp(str,h->items[key]) == 0 ){
+            h->freq[key]++;
+            return h->freq[key];
+        } else {
+            return 0;
+        }
+    }
+}
+/*************************************************************************/
+/**
+ *  Search’s for a word in the hash table.
+ *  Uses htable_step and word_to_int to find step size and key for searching.
+ *
+ * @para h hash table to be searched.
+ * @para str the word to be searched for.
+ *
+ * @return 0 if the number of collisions is greater than the size of the table,
+ * showing the word doesn't exit. (Prime sized table should ensure all cells in table visited).
+ * If the word is found, the number of occurrences is returned.
+ */
 
 int htable_search(htable h, char *str){
-    unsigned int collision = 0;
-    unsigned int convert = htable_word_to_int(str);
-    unsigned int index = htable_step(h,convert);
+    int step = htable_step(h, word_to_int(str));
+    unsigned int check = word_to_int(str)%h->capacity;
+    unsigned int collisions = 0;
 
-    while(h->keys[index]!=NULL &&
-        (strcmp(str, h->keys[index])!=0 &&
-        index < h->capacity)){
+    while ( h->items[check] != NULL &&
+            strcmp(str, h->items[check]) !=0 &&
+            collisions < h->capacity){
 
-        index++;
-        collision++;
+
+        check  = check + step;
+        if (check >= h->capacity){
+            check = check - h->capacity;
+        }
+        collisions++;
     }
 
-    if (collision == h->capacity){
+    if (collisions == h->capacity){
         return 0;
-    } else {
-        return h->frequencies[index];
+    }else {
+        return h->freq[check];
     }
 }
-
+/***********************************************************************/
 /**
  * Prints out a line of data from the hash table to reflect the state
  * the table was in when it was a certain percentage full.
@@ -135,27 +255,27 @@ int htable_search(htable h, char *str){
  * @param percent_full - the point at which to show the data from.
  */
 static void print_stats_line(htable h, FILE *stream, int percent_full) {
-   int current_entries = h->capacity * percent_full / 100;
-   double average_collisions = 0.0;
-   int at_home = 0;
-   int max_collisions = 0;
-   int i = 0;
+    int current_entries = h->capacity * percent_full / 100;
+    double average_collisions = 0.0;
+    int at_home = 0;
+    int max_collisions = 0;
+    int i = 0;
 
-   if (current_entries > 0 && current_entries <= h->num_keys) {
-      for (i = 0; i < current_entries; i++) {
-         if (h->stats[i] == 0) {
-            at_home++;
-         }
-         if (h->stats[i] > max_collisions) {
-            max_collisions = h->stats[i];
-         }
-         average_collisions += h->stats[i];
-      }
+    if (current_entries > 0 && current_entries <= h->num_keys) {
+        for (i = 0; i < current_entries; i++) {
+            if (h->stats[i] == 0) {
+                at_home++;
+            }
+            if (h->stats[i] > max_collisions) {
+                max_collisions = h->stats[i];
+            }
+            average_collisions += h->stats[i];
+        }
 
-      fprintf(stream, "%4d %10d %10.1f %10.2f %11d\n", percent_full,
-              current_entries, at_home * 100.0 / current_entries,
-              average_collisions / current_entries, max_collisions);
-   }
+        fprintf(stream, "%4d %10d %10.1f %10.2f %11d\n", percent_full,
+                current_entries, at_home * 100.0 / current_entries,
+                average_collisions / current_entries, max_collisions);
+    }
 }
 
 /**
@@ -174,53 +294,18 @@ static void print_stats_line(htable h, FILE *stream, int percent_full) {
  * @param stream the stream to send output to.
  * @param num_stats the maximum number of statistical snapshots to print.
  */
+
 void htable_print_stats(htable h, FILE *stream, int num_stats) {
-   int i;
 
-   fprintf(stream, "\n%s\n\n",
-           h->method == LINEAR_P ? "Linear Probing" : "Double Hashing");
-   fprintf(stream, "Percent   Current   Percent    Average      Maximum\n");
-   fprintf(stream, " Full     Entries   At Home   Collisions   Collisions\n");
-   fprintf(stream, "-----------------------------------------------------\n");
-   for (i = 1; i <= num_stats; i++) {
-      print_stats_line(h, stream, 100 * i / num_stats);
-   }
-   fprintf(stream, "-----------------------------------------------------\n\n");
-}
+    int i;
 
-void htable_print(htable h, FILE *stream){
-    unsigned int i;
-    for (i=0; i < h->capacity; i++){
-        if (h->frequencies[i] != 0){
-            fprintf(stream,"%d    %s\n", h->frequencies[i], h->keys[i]);
-        }
+    fprintf(stream, "\n%s\n\n",
+            h->method == LINEAR_P ? "Linear Probing" : "Double Hashing");
+    fprintf(stream, "Percent   Current   Percent    Average      Maximum\n");
+    fprintf(stream, " Full     Entries   At Home   Collisions   Collisions\n");
+    fprintf(stream, "-----------------------------------------------------\n");
+    for (i = 1; i <= num_stats; i++) {
+        print_stats_line(h, stream, 100 * i / num_stats);
     }
-}
-
-/**
- * Prints out the entire contents of the hash table, with the
- * position of the key in the hash table, the frequency of the key,
- * the number of collisions, and the key itself.
- * If a position doesn't contain a word, it will remain blank.
- *
- * @param h - the hash table.
- * @param stream - a stream to print the data to.
- */
-void htable_print_entire_table(htable h, FILE *stream){
-    unsigned int i;
-    char *word;
-
-    fprintf(stream, "  Pos  Freq  Stats  Word\n");
-    fprintf(stream, "----------------------------------------\n");
-
-    for (i=0; i < h->capacity; i++) {
-       if (NULL == h->keys[i]) {
-          word = "\0";
-       }
-       else {
-          word = h->keys[i];
-       }
-       fprintf(stream, "%5d %5d %5d   %s\n", i, h->frequencies[i],
-               h->stats[i], word);
-    }
+    fprintf(stream, "-----------------------------------------------------\n\n");
 }
