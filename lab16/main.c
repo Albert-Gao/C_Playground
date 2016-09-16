@@ -9,76 +9,61 @@ void print_key(char *s) {
 
 rbt my_new_rbt(){
     rbt tree = rbt_new();
-    tree = rbt_insert(tree,"D");
-    tree = rbt_insert(tree,"B");
-    tree = rbt_insert(tree,"F");
-    tree = rbt_insert(tree,"A");
-    tree = rbt_insert(tree,"C");
-    tree = rbt_insert(tree,"E");
-    return tree = rbt_insert(tree,"G");
+    tree = rbt_insert(tree,"h");
+    tree = rbt_insert(tree,"l");
+    tree = rbt_insert(tree,"i");
+    tree = rbt_insert(tree,"f");
+    tree = rbt_insert(tree,"j");
+    tree = rbt_insert(tree,"g");
+    tree = rbt_insert(tree,"k");
+    tree = rbt_insert(tree,"d");
+    tree = rbt_insert(tree,"a");
+    tree = rbt_insert(tree,"e");
+    tree = rbt_insert(tree,"b");
+    tree = rbt_insert(tree,"c");
+    return tree;
 }
 
 int main(void){
     rbt tree;
-    rbt tree1;
-    rbt tree2;
-    printf("\nCreating binary search tree via rbt_new()... done!\n\n");
+    printf("\nCreating red black tree via bst_new()... done!\n\n");
 
     tree = my_new_rbt();
-    tree1 = my_new_rbt();
-    tree2 = my_new_rbt();
-    printf("Inserting data to red black tree via rbt_insert()... done!\n\n");
+
+    printf("Inserting data to binary search tree via rbt_insert()... done!\n\n");
 
     printf("Check the results via rbt_search():\n");
-    printf("Is there a -D- ? ");
-    printf("%d\n",rbt_search(tree, "D"));
+    printf("Is there a -h- ? ");
+    printf("%d\n",rbt_search(tree, "h"));
 
-    printf("Is there a -B- ? ");
-    printf("%d\n",rbt_search(tree, "B"));
+    printf("Is there a -l- ? ");
+    printf("%d\n",rbt_search(tree, "l"));
 
-    printf("Is there a -F- ? ");
-    printf("%d\n",rbt_search(tree, "F"));
+    printf("Is there a -i- ? ");
+    printf("%d\n",rbt_search(tree, "i"));
 
-    printf("Is there a -A- ? ");
-    printf("%d\n",rbt_search(tree, "A"));
+    printf("Is there a -f- ? ");
+    printf("%d\n",rbt_search(tree, "f"));
 
-    printf("Is there a -C- ? ");
-    printf("%d\n",rbt_search(tree, "C"));
+    printf("Is there a -j- ? ");
+    printf("%d\n",rbt_search(tree, "j"));
 
-    printf("Is there a -E- ? ");
-    printf("%d\n",rbt_search(tree, "E"));
+    printf("Is there a -g- ? ");
+    printf("%d\n",rbt_search(tree, "g"));
 
-    printf("Is there a -G- ? ");
-    printf("%d\n\n",rbt_search(tree, "G"));
+    printf("Is there a -k- ? ");
+    printf("%d\n\n",rbt_search(tree, "k"));
 
     /*Test the traverse*/
-    printf("rbt_preorder()\nshould output (D B A C F E G)\n");
-    rbt_preorder(tree,print_key);
+    printf("rbt_preorder()\n");
+    rbt_preorder(tree);
     printf("\n\n");
 
-    printf("rbt_inorder()\nshould output (A B C D E F G)\n");
-    rbt_inorder(tree,print_key);
-    printf("\n\n");
-
-    /*Test the delete*/
-    printf("rbt_delete() -C-;\nshould output (A B D E F G)\n");
-    tree = rbt_delete(tree,"C");
-    rbt_inorder(tree,print_key);
-    printf("\n\n");
-
-    printf("rbt_delete() -B-;\nshould output (A C D E F G)\n");
-    tree1 = rbt_delete(tree1,"B");
-    rbt_inorder(tree1,print_key);
-    printf("\n\n");
-
-    printf("rbt_delete() -D-;\nshould output (A B C E F G)\n");
-    tree2 = rbt_delete(tree2,"D");
-    rbt_inorder(tree2,print_key);
+    printf("rbt_inorder()\n");
+    rbt_inorder(tree);
     printf("\n\n");
 
     tree = rbt_free(tree);
-    tree1 = rbt_free(tree1);
-    tree2 = rbt_free(tree2);
 
     return EXIT_SUCCESS;
 }

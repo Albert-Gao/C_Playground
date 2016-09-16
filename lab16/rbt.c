@@ -35,54 +35,61 @@ rbt left_rotate(rbt r) {
     return r;
 }
 
-rbt rbt_delete(rbt b, char *str){
-    if (b==NULL){
-        /*Deleting a not-exist key should have no effect. */
-        return b;
-    } else if (strcmp(str, b->key) < 0){
-        /*If key is smaller, delete it from the left subtree.*/
-        b->left = rbt_delete(b->left, str);
-    } else if (strcmp(str, b->key) > 0){
-        /*If key is larger, delete it from the right subtree.*/
-        b->right = rbt_delete(b->right, str);
-    } else {
-        /*If the key match the current node, remove the node.*/
-        if (b->left == NULL && b->right == NULL){
-            /*if it is a leaf*/
-            free(b->key);
-            free(b);
-            b = NULL;
-        } else if (b->left != NULL && b->right == NULL){
-            /*if only one child(left), move left up*/
-            rbt temp = b;
-            b = b->left;
-            free(temp->key);
-            free(temp);
-        } else if (b->left == NULL && b->right != NULL){
-            /*if only one child(right), move right up*/
-            rbt temp = b;
-            b = b->right;
-            free(temp->key);
-            free(temp);
-        } else {
-            /*if node has two children, copy the min_right then move right up*/
-            rbt min_right = b->right;
-            while(min_right->left!=NULL){
-                min_right = min_right->left;
-            }
-            strcpy(b->key, min_right->key);
-            b->right = rbt_delete(b->right, min_right->key);
-        }
-    }
-    return b;
-}
-
 rbt rbt_free(rbt b){
     free( b->key );
     if (b->left != NULL) rbt_free(b->left);
     if (b->right != NULL) rbt_free(b->right);
     free(b);
     return b;
+}
+
+rbt rbt_fix(rbt r){
+    if ( IS_RED(r->left) && IS_RED(r->left->left) ) {
+        if (IS_RED(r->right)){
+            r->colour = RED;
+            r->left->colour = BLACK;
+            r->right->colour = BLACK;
+        } else if(IS_BLACK(r->right)) {
+            r = right_rotate(r);
+            r->colour = BLACK;
+            r->right->colour = RED;
+        }
+    } else if ( IS_RED(r->left) && IS_RED(r->left->right) ){
+        if (IS_RED(r->right)){
+            r->colour = RED;
+            r->left->colour = BLACK;
+            r->right->colour = BLACK;
+        } else if(IS_BLACK(r->right)) {
+            r->left = left_rotate(r->left);
+            r = right_rotate(r);
+            r->colour = BLACK;
+            r->right->colour = RED;
+        }
+    } else if ( IS_RED(r->right) && IS_RED(r->right->left) ){
+        if (IS_RED(r->left)){
+            r->colour = RED;
+            r->left->colour = BLACK;
+            r->right->colour = BLACK;
+        } else if(IS_BLACK(r->left)) {
+            r->right = right_rotate(r->right);
+            r  = left_rotate(r);
+            r->colour = BLACK;
+            r->left->colour = RED;
+            r->right->colour = RED;
+        }
+    } else if ( IS_RED(r->right) && IS_RED(r->right->right) ){
+        if (IS_RED(r->left)){
+            r->colour = RED;
+            r->left->colour = BLACK;
+            r->right->colour = BLACK; 
+        } else if(IS_BLACK(r->left)) {
+            r = left_rotate(r);
+            r->colour = BLACK;
+            r->left->colour = RED;
+            r->right->colour = RED; 
+        }
+    }
+    return r;
 }
 
 rbt rbt_insert(rbt b, char *str){
@@ -104,25 +111,28 @@ rbt rbt_insert(rbt b, char *str){
         /*the new value is less then the old*/
         b->left = rbt_insert(b->left,str);
     }
-    return b;
+    return rbt_fix(b);
 }
 
 rbt rbt_new(){
     return NULL;
 }
 
-void rbt_preorder(rbt b, void f(char *str)){
-    if (b == NULL) return;
-    f(b->key);
-    rbt_preorder(b->left, f);
-    rbt_preorder(b->right, f);
+
+void rbt_preorder(rbt b){
+    if (b == NULL) return;    
+    printf("%-7s: %s\n",(IS_RED(b))?"red:":"black:",b->key);
+    rbt_preorder(b->left);
+    rbt_preorder(b->right);
 }
 
-void rbt_inorder(rbt b, void f(char *str)){
+
+
+void rbt_inorder(rbt b){
     if (b == NULL) return;
-    rbt_inorder(b->left, f);
-    f(b->key);
-    rbt_inorder(b->right, f);
+    rbt_preorder(b->left);
+    printf("%-7s: %s\n",(IS_RED(b))?"red:":"black:",b->key);
+    rbt_preorder(b->right);
 }
 
 int rbt_search(rbt b, char *str){
