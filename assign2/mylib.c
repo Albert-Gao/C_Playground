@@ -1,10 +1,23 @@
-#include <stdio.h> /* for fprintf */
-#include <stdlib.h> /* for size_t, malloc, realloc, exit */
+/**
+ * Library for Memory allocations and getword.
+ *
+ * @Author foxre274 gaoha773 scrca599
+ * @date 10/09/2016
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
 #include "mylib.h"
 
+/**
+ * Allocates memory and checks for allocation failures.
+ * @param s size of memory to allocate.
+ *
+ * @return pointer to successfully allocated memory.
+ */
 void *emalloc(size_t s) {
     void *result = malloc(s);
     if (NULL == result) {
@@ -14,6 +27,13 @@ void *emalloc(size_t s) {
     return result;
 }
 
+/**
+ * Reallocates memory and checks for allocation failures.
+ * @param p pointer to previously allocated memory.
+ * @param s size of memory to reallocate.
+ *
+ * @return pointer to successfully reallocated memory.
+ */
 void *erealloc(void *p, size_t s) {
     void *result = realloc(p, s);
     if (NULL == result) {
@@ -23,6 +43,14 @@ void *erealloc(void *p, size_t s) {
     return result;
 }
 
+/**
+ * Reads consecutive words from a file.
+ * @param s word to get.
+ * @param limit the maximum size of the word.
+ * @param stream fileto read from.
+ *
+ * @return the length of the word.
+ */
 int getword(char *s, int limit, FILE *stream) {
     int c;
     char *w = s;

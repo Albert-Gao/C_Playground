@@ -1,3 +1,11 @@
+/**
+ * Manages the command line options.
+ * Uses tree: definitions of tree data structure.
+ * Uses mylib: memory allocation and getword functions.
+ * @Author foxre274 gaoha773 scrca599
+ * @Date 10/Sep/2016
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -7,6 +15,13 @@
 #include "tree.h"
 #include "mylib.h"
 
+/**
+ * Displays help option if h or unknown key is typed on the command line.
+ * Called from switch statement. 
+ * @param myprog name of the program read from the command line and
+ * displayed in the usage statement. 
+ *
+ */
 static void print_usage(char* myprog) {
     char* options = "\n\n"
     "Perform various operations using a binary tree.  By default, words\n"
@@ -26,35 +41,45 @@ char* options1 = " -d\t      Only print the tree depth (ignore -o)\n"
     fprintf(stderr, "Usage: %s [OPTION]... <STDIN> %s%s\n",myprog, options, options1);
 }
 
-
+/**
+ * Prints a single line of the tree. 
+ *
+ * @param freq number of occurences of words in the table.
+ * @param word word to be printed to the screen. 
+ */
 static void print_info(int freq, char *word){
     printf("%-4d %s\n",freq,word);
 }
 
+/**
+ * Gathers input from the command line and responds to the given
+ * arguments.
+ * Refer to help menu (-h) for more information.
+ *
+ * @param argc count the number of arguments on the command line. 
+ * @param argv[] array of arguments.
+ *
+ * @return exit success or exit failure.
+ */
 int main (int argc, char *argv[]){
 
-    /* Variables used to read text file into hash table. */
     char word[256];
     const char *optstring = "c:df:orh";
     char option;
     tree h;
 
-    /* Default values which are changed by command line switch statement. */
     tree_t tree_type = BST;
     FILE *outfile;
     char* out = NULL;
 
-    /* Variables used for dictionary. */
     FILE *filename;
     int unknown = 0;
     clock_t fill_start,fill_end, search_start, search_end;
 
-    /* Flags changed by command line swicth statement. */
     int cflag = 0;
     int dflag = 0;
     int oflag = 0;
 
-    /* Switch statement to manage command line options. */
     while ((option = getopt(argc,argv,optstring)) != EOF){
         switch(option){
             case'f':
@@ -75,7 +100,7 @@ int main (int argc, char *argv[]){
 
             case 'c':
                 if (NULL == (filename = fopen(optarg, "r"))) {
-                    fprintf(stderr, "%s: can’t find file %s\n", argv[0], argv[1]);
+                    fprintf(stderr, "%s: can't find file %s\n", argv[0], argv[1]);
                     return EXIT_FAILURE;
                 }
                 cflag = 1;

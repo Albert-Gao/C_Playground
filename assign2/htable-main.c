@@ -1,3 +1,11 @@
+/**
+ * Manages the command line options.
+ * Uses htable: definitions of htable data structure.
+ * Uses mylib: memory allocation and getword functions.
+ * @Author foxre274 gaoha773 scrca599
+ * @Date 10/Sep/2016
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -7,6 +15,13 @@
 #include "htable.h"
 #include "mylib.h"
 
+/**
+ * Displays help option if h or unknown key is typed on the command line.
+ * Called from switch statement. 
+ * @param myprog name of the program read from the command line which is
+ * displayed in the usage statement. 
+ *
+ */
 static void print_usage(char* myprog) {
 
     char* options =  "\n\n"
@@ -14,29 +29,40 @@ static void print_usage(char* myprog) {
         "read from stdin and added to the hash table, before being printed out\n"
         "alongside their frequencies to stdout.\n\n"
 
-        " -c FILENAME  \tCheck spelling of words in FILENAME using words\n"
-        "\t\tfrom stdin as dictionary.  Print unknown words to\n"
-        "\t\tstdout, timing info & count to stderr (ignore -p)\n";
+        " -c FILENAME  Check spelling of words in FILENAME using words\n"
+        "\t      from stdin as dictionary.  Print unknown words to\n"
+        "\t      stdout, timing info & count to stderr (ignore -p)\n";
 
-    char* options1 = " -d            \tUse double hashing (linear probing is the default)\n"
-        " -e            \tDisplay entire contents of hash table on stderr\n"
-        " -p            \tPrint stats info instead of frequencies & words\n"
-        " -s SNAPSHOTS \tShow SNAPSHOTS stats snapshots (if -p is used)\n"
-        " -t TABLESIZE \tUse the first prime >= TABLESIZE as htable size\n\n"
+   char* options1 = " -d           Use double hashing (linear probing is the default)\n"
+                    " -e           Display entire contents of hash table on stderr\n"
+                    " -p           Print stats info instead of frequencies & words\n"
+                    " -s SNAPSHOTS Show SNAPSHOTS stats snapshots (if -p is used)\n"
+                    " -t TABLESIZE Use the first prime >= TABLESIZE as htable size\n\n"
 
-        " -h           \tDisplay this message\n";
+                    " -h           Display this message\n";
 
-    fprintf(stderr, "Usage: %s [OPTION]...<STDIN> %s%s\n",myprog, options, options1);
-
+   fprintf(stderr, "Usage: %s [OPTION]... <STDIN> %s%s\n",myprog, options, options1);
 }
 
+/**
+ * Prints a single line of the table. 
+ *
+ * @param freq number of occurences of words in the table.
+ * @param word word to be printed to the screen. 
+ */
 
 static void print_info(int freq, char *word){
     printf("%-4d %s\n",freq,word);
 }
 
+/**
+ * Checks to see if a number is a prime number.
+ *
+ * @param n number to check if is a prime.
+ *
+ * @return 1 if prime, 0 if not.
+ */
 static int is_prime(int n){
-    /* 0 is false 1 is true. */
 
     int i = 5;
 
@@ -59,6 +85,14 @@ static int is_prime(int n){
     return 1;
 }
 
+/**
+ * Finds the next prime equal to or greater than the given number.
+ * Uses is_prime.
+ *
+ * @param n the number to find next prime from.
+ *
+ * @return next prime number. 
+ */
 static int find_prime(int n){
 
     if (n%2 == 0){
@@ -66,37 +100,41 @@ static int find_prime(int n){
     }
 
     while (is_prime(n) == 0){
-        n +=2;
+        n += 2;
     }
 
     return n;
 }
 
+/**
+ * Gathers input from the command line and responds to the given
+ * arguments.
+ * Refer to help menu (-h) for more information.
+ *
+ * @param argc number of arguments on the command line. 
+ * @param argv[] array of arguments.
+ *
+ * @return exit success or exit failure. 
+ */
 int main (int argc, char *argv[]){
 
-    /* Variables used to read text file into hash table. */
     char word[256];
     const char *optstring = "c:dehps:t:";
     char option;
     htable h;
 
-    /* Default values which are changed by command line switch statement. */
     hashing_t type = LINEAR_P;
     int size = 0;
     int snapshots = 10;
 
-    /* Variables used for dictionary. */
     FILE *filename;
     int unknown = 0;
     clock_t fill_start,fill_end, search_start, search_end;
 
-    /* Flags changed by command line swicth statement. */
     int pflag = 0;
     int cflag = 0;
     int eflag = 0;
 
-
-    /* Switch statement to manage command line options. */
     while ((option = getopt(argc,argv,optstring)) != EOF){
         switch(option){
             case 'h':
@@ -114,7 +152,7 @@ int main (int argc, char *argv[]){
 
             case 'c':
                 if (NULL == (filename = fopen(optarg, "r"))) {
-                    fprintf(stderr, "%s: can’t find file %s\n", argv[0], argv[1]);
+                    fprintf(stderr, "%s: can't find file %s\n", argv[0], argv[1]);
                     return EXIT_FAILURE;
                 }
                 cflag = 1;
@@ -138,7 +176,7 @@ int main (int argc, char *argv[]){
                 exit(EXIT_FAILURE);
         }
     }
-    /* Create and fill hash table. - this becomes the dictionary. */
+
     h = htable_new(size, type);
 
     fill_start = clock();
@@ -147,9 +185,8 @@ int main (int argc, char *argv[]){
     }
     fill_end = clock();
 
-    /* If c was selected, file name should be set and change flag to ignore p option. */
     if (cflag == 1){
-        pflag = 0; /* Ignore p option. */
+        pflag = 0; 
         search_start = clock();
         while (getword(word, sizeof word, filename) != EOF){
             if (htable_search(h, word) == 0){
@@ -160,12 +197,11 @@ int main (int argc, char *argv[]){
         search_end = clock();
         fclose(filename);
 
-        fprintf(stderr, "Fill time   : %7f\nSearch time : %7f\nUnknown words   = %d\n", \
-                (fill_end-fill_start)/(double)CLOCKS_PER_SEC,   \
+        fprintf(stderr, "Fill time     : %7f\nSearch time   : %7f\nUnknown words = %d\n",\
+                (fill_end-fill_start)/(double)CLOCKS_PER_SEC,\
                 (search_end-search_start)/(double)CLOCKS_PER_SEC, unknown);
     }
 
-    /* Print tables depending on command line input. */
     if (eflag == 1){
         htable_print_entire_table(h, stderr);
     }

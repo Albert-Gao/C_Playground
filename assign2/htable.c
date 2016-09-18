@@ -26,12 +26,12 @@ struct htablerec {
 
 /**
  * Creates a new instance of a Hash table with a default size of 113 if 
- * no capacity passed which means the capacity = 0.
+ * no capacity passed (which means the capacity = 0).
  *
  * @param capacity as maximum hash table size. 
  * @param type the type of the hash function used to store keys.
 
- * @return htable an empty hash table of size capacity.
+ * @return an empty hash table of size capacity.
  */
 
 htable htable_new(int capacity, hashing_t type){
@@ -60,9 +60,9 @@ htable htable_new(int capacity, hashing_t type){
 }
 
 /**
- * Print the items in the hash table
- * @param h the hash table we want to print
- * @param f the function we need to call when iterate the hash table
+ * Print the items in the hash table.
+ * @param h the hash table to be printed.
+ * @param f the function we need to call when iterating the hash table.
  */ 
 void htable_print(htable h, void f()){
     unsigned int i;
@@ -78,7 +78,7 @@ void htable_print(htable h, void f()){
  * Used for linear and double hashing.
  *
  * @param word a word used for key calculations.
- * @return unsigned integer representing for the word.
+ * @return unsigned integer representing the word.
  */
 static unsigned int word_to_int(char *word){
     unsigned int result = 0;
@@ -94,8 +94,8 @@ static unsigned int word_to_int(char *word){
  * @param h the hash table to use capacity value.
  * @param i_key the current integer key value used to calculate the step size for double hashing.
  *
- * @return step size which is 1 if hashing method is linear probing otherwise a calculated
- * step size using i_key is returned.
+ * @return step size, which is 1 if hashing method is linear probing, otherwise
+ * a calculated step size using i_key is returned.
  */
 static unsigned int htable_step(htable h, unsigned int i_key){
 
@@ -112,8 +112,8 @@ static unsigned int htable_step(htable h, unsigned int i_key){
  * Pos  Freq  Stats  Word
  * 
  * @li Pos - hash table position.
- * @li Freq - how many occurrences of the word occurred in the text at the given position.
- * @li Stats - number of collisions which occurred, in sequential order.
+ * @li Freq - how many occurrences of the word in the text at the given position.
+ * @li Stats - number of collisions that occurred, in sequential order.
  * @li Word - Word stored in hash table at the given position.
  *
  * @param h hash table.
@@ -137,44 +137,46 @@ void htable_print_entire_table(htable h, FILE *stream){
 }
 
 /**
- * Deallocates memory which was initially allocated for the objects construction.
+ * Deallocates memory which was initially allocated for the object's
+ * construction.
  *
  * @param h table to free.
  */
-
 void htable_free(htable h){
 
     unsigned int i;
 
-    /* Free the char strings*/
     for (i = 0; i < h->capacity; i++){
         if ( h->items[i] != NULL ) {
             free(h->items[i]);
         }
     }
 
-    /* Free the arrays */
     free (h->freq);
     free (h->items);
     free (h->stats);
 
-    /* Free struct */
     free(h);
 }
-/****************************************************************************/
+
 /**
  * Inserts a word into a hash table.
- * Uses word_to_int and h_table_step to work our key and step size.
+ * Uses word_to_int and h_table_step to work the key and step size.
  * The word is inserted into the first available position.
+ * 
+ * First we use a while loop to find the proper position for the new word.
+ * If the position is already occupied, we will increase the collisions and
+ * increase the index.
+ * 
+ * Then we will insert word into this index, otherwise increase the frequency.
  *
  * @param h hash table to insert word into.
  * @param str word to insert into hash table.
  *
- * @return 0 if table has no available space for a new word (full), otherwise frequency
- * of word occurrence if word is already in the table or 1 if a new
- * word and placed into an empty cell.
+ * @return 0 if table has no available space for a new word (full), otherwise
+ * frequency of word occurrence if word is already in the table, or 1 if a new
+ * word is placed into an empty cell.
  */
-
 int htable_insert(htable h, char *str){
 
     unsigned int key = word_to_int(str)%h->capacity;
@@ -207,19 +209,19 @@ int htable_insert(htable h, char *str){
         }
     }
 }
-/*************************************************************************/
+
 /**
- *  Search’s for a word in the hash table.
+ *  Search for a word in the hash table.
  *  Uses htable_step and word_to_int to find step size and key for searching.
  *
- * @para h hash table to be searched.
- * @para str the word to be searched for.
+ * @param h the hash table to be searched.
+ * @param str the word to be searched for.
  *
  * @return 0 if the number of collisions is greater than the size of the table,
- * showing the word doesn't exit. (Prime sized table should ensure all cells in table visited).
+ * showing the word doesn't exist. (Prime sized table should ensure all cells in
+ * table visited).
  * If the word is found, the number of occurrences is returned.
  */
-
 int htable_search(htable h, char *str){
     int step = htable_step(h, word_to_int(str));
     unsigned int check = word_to_int(str)%h->capacity;
@@ -228,7 +230,6 @@ int htable_search(htable h, char *str){
     while ( h->items[check] != NULL &&
             strcmp(str, h->items[check]) !=0 &&
             collisions < h->capacity){
-
 
         check  = check + step;
         if (check >= h->capacity){
@@ -243,16 +244,16 @@ int htable_search(htable h, char *str){
         return h->freq[check];
     }
 }
-/***********************************************************************/
+
 /**
- * Prints out a line of data from the hash table to reflect the state
- * the table was in when it was a certain percentage full.
+ * Prints out a line of data from the hash table to reflect the state the table
+ * was in when it was a certain percentage full.
  * Note: If the hashtable is less full than percent_full then no data
  * will be printed.
  *
- * @param h - the hash table.
- * @param stream - a stream to print the data to.
- * @param percent_full - the point at which to show the data from.
+ * @param h the hash table.
+ * @param stream a stream to print the data to.
+ * @param percent_full the point at which to show the data from.
  */
 static void print_stats_line(htable h, FILE *stream, int percent_full) {
     int current_entries = h->capacity * percent_full / 100;
@@ -294,7 +295,6 @@ static void print_stats_line(htable h, FILE *stream, int percent_full) {
  * @param stream the stream to send output to.
  * @param num_stats the maximum number of statistical snapshots to print.
  */
-
 void htable_print_stats(htable h, FILE *stream, int num_stats) {
 
     int i;
