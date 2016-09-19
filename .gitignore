@@ -1,3 +1,4 @@
 .DS_Store
-/lab14/main
-/lab14/main.dSYM/
+.vscode/
+*.plist
+*.dSYM
