@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "mylib.h"
 #include "flexarray.h"
 
 struct flexarrayrec {
@@ -28,17 +27,23 @@ void *erealloc(void *p, size_t s) {
 }
 
 void insertion_sort(int *arr, int size) {
-    int start,previousIndex,insertValue;
+    int i, previousIndex, insertValue, j;
 
-    for (start = 1; start < size; start++) {
-        insertValue = arr[start];
-        previousIndex = start - 1;
+    for (i = 1; i < size; i++) {
+        insertValue = arr[i];
+        previousIndex = i - 1;
 
         while (previousIndex >= 0 && arr[previousIndex] > insertValue) {
             arr[previousIndex + 1] = arr[previousIndex];
             previousIndex = previousIndex - 1;
         }
         arr[previousIndex + 1] = insertValue;
+
+        if (i == ((size - 1) / 2)) {
+            for (j = 0; j < size; j++) {
+                fprintf(stderr, "%d\n", arr[j]);
+            }
+        }
     }
 }
 
@@ -66,9 +71,7 @@ void flexarray_print(flexarray f) {
     }
 }
 
-void flexarray_sort(flexarray f) {
-    insertion_sort(f->items, f->itemcount);
-}
+void flexarray_sort(flexarray f) { insertion_sort(f->items, f->itemcount); }
 
 void flexarray_free(flexarray f) {
     free(f->items);
