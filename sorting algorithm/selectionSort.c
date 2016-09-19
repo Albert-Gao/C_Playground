@@ -15,7 +15,6 @@
  * then do the previous procedures again.
  */
 void selection_sort(int *arr, int size) {
-    /* Sorting code goes here */
     int i,j,min_index,tempSwap;
 
     for (i=0; i<size-1; i++){
@@ -32,6 +31,7 @@ void selection_sort(int *arr, int size) {
         arr[i]=tempSwap;        
     }
 }
+
 int main(void) {
     /*
     int my_array[ARRAY_MAX];
