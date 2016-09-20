@@ -45,7 +45,7 @@ int main(void) {
         my_array[i] = rand() % array_size;
     }
 
-    printf("What’s in the array:\n");
+    printf("What’s in the array:");
 
     for (i = 0; i < array_size; i++) {
         printf("%d ", my_array[i]);
