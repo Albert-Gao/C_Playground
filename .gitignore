@@ -2,3 +2,5 @@
 .vscode/
 *.plist
 *.dSYM
+*.c~
+*.h~
