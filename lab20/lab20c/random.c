@@ -31,7 +31,7 @@ int main(void) {
     int *my_array;
     int i = 0;
 
-    printf("Enter the size of the array: ");
+    printf("Enter the size of the array:");
     scanf("%d", &array_size);
 
     my_array = malloc(array_size * sizeof my_array[0]);
@@ -45,7 +45,7 @@ int main(void) {
         my_array[i] = rand() % array_size;
     }
 
-    printf("What’s in the array:\n");
+    printf("\nWhat's in the array:\n");
 
     for (i = 0; i < array_size; i++) {
         printf("%d ", my_array[i]);
