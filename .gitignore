@@ -1,3 +1,8 @@
-*
-!*.c
-!*.h
+*.plist
+*.dSYM
+*.c~
+*.h~
+*.db-*
+*.db
+*-prog
+prime
