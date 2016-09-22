@@ -5,9 +5,9 @@
 #define ARRAY_MAX 40000
 
 /*
- * Start from the 2nd item,
+ * i from the 2nd item,
  * everytime when you do a sort,
- * bumped the started item first,
+ * bumped the ied item first,
  * then compare all the previous items one by one,
  * from left to right, if the checked item is bigger
  * than the bumped item, copy its value to the bumped value,
@@ -16,17 +16,17 @@
  * to the (stopped position+1) to avoid the outOfIndex. 
  */
 void insertion_sort(int *arr, int size) {
-    int start,previousIndex,insertValue;
+    int i,j,insertValue;
 
-    for (start = 1; start < size; start++) {
-        insertValue = arr[start];
-        previousIndex = start - 1;
+    for (i = 1; i < size; i++) {
+        insertValue = arr[i];
+        j = i - 1;
 
-        while (previousIndex >= 0 && arr[previousIndex] > insertValue) {
-            arr[previousIndex + 1] = arr[previousIndex];
-            previousIndex = previousIndex - 1;
+        while (j >= 0 && arr[j] > insertValue) {
+            arr[j + 1] = arr[j];
+            j--;
         }
-        arr[previousIndex + 1] = insertValue;
+        arr[j + 1] = insertValue;
     }
 }
 int main(void) {
@@ -43,17 +43,17 @@ int main(void) {
     return EXIT_SUCCESS;
     */
     int my_array[ARRAY_MAX];
-    clock_t start, end;
+    clock_t i, end;
     int i, count = 0;
     while (count < ARRAY_MAX && 1 == scanf("%d", &my_array[count])) {
         count++;
     }
-    start = clock();
+    i = clock();
     insertion_sort(my_array, count);
     end = clock();
     for (i = 0; i < count; i++) {
         printf("%d\n", my_array[i]);
     }
-    fprintf(stderr, "%d %f\n", count, (end - start) / (double)CLOCKS_PER_SEC);
+    fprintf(stderr, "%d %f\n", count, (end - i) / (double)CLOCKS_PER_SEC);
     return EXIT_SUCCESS;
 }
