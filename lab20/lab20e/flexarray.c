@@ -26,6 +26,16 @@ void *erealloc(void *p, size_t s) {
     return result;
 }
 
+/*
+ * start from the first item to the last
+ * everytime you start from a index,
+ * check all the rest items to the one next to rightmost,
+ * and everytime found a smaller value,
+ * mark its index until you hit the end.
+ * swap the found Smallest to the current start-loop-item
+ * move the start index one more step to the right
+ * then do the previous procedures again.
+ */
 void selection_sort(int *arr, int size) {
     int i, j, min_index, tempSwap, k;
 
