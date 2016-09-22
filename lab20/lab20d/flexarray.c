@@ -26,6 +26,17 @@ void *erealloc(void *p, size_t s) {
     return result;
 }
 
+/*
+ * Start from the 2nd item,
+ * everytime you do a sort,
+ * bump the started item first,
+ * then compare all the previous items one by one,
+ * from left to right, if the checked item is bigger
+ * than the bumped item, copy its value to the bumped value,
+ * then move one step back to do the checking again,
+ * until you are outOfIndex, then insert the bumped value
+ * to the (stopped position+1) to avoid the outOfIndex. 
+ */
 void insertion_sort(int *arr, int size) {
     int i, previousIndex, insertValue, j;
 
@@ -35,7 +46,7 @@ void insertion_sort(int *arr, int size) {
 
         while (previousIndex >= 0 && arr[previousIndex] > insertValue) {
             arr[previousIndex + 1] = arr[previousIndex];
-            previousIndex = previousIndex - 1;
+            previousIndex--;
         }
         arr[previousIndex + 1] = insertValue;
 

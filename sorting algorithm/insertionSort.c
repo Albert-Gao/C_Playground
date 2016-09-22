@@ -24,7 +24,7 @@ void insertion_sort(int *arr, int size) {
 
         while (previousIndex >= 0 && arr[previousIndex] > insertValue) {
             arr[previousIndex + 1] = arr[previousIndex];
-            previousIndex = previousIndex - 1;
+            previousIndex--;
         }
         arr[previousIndex + 1] = insertValue;
     }
