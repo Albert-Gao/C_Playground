@@ -35,7 +35,7 @@ void *erealloc(void *p, size_t s) {
  * than the bumped item, copy its value to the bumped value,
  * then move one step back to do the checking again,
  * until you are outOfIndex, then insert the bumped value
- * to the (stopped position+1) to avoid the outOfIndex. 
+ * to the (stopped position+1) to avoid the outOfIndex.
  */
 void insertion_sort(int *arr, int size) {
     int i, previousIndex, insertValue, j;
@@ -75,8 +75,8 @@ void flexarray_append(flexarray f, int num) {
 }
 
 void flexarray_print(flexarray f) {
-    int i, n = f->itemcount;
-    for (i = 0; i < n; i++) {
+    int i;
+    for (i = 0; i < f->itemcount; i++) {
         printf("%d\n", f->items[i]);
     }
 }

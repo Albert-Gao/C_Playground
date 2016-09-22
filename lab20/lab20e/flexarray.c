@@ -77,8 +77,8 @@ void flexarray_append(flexarray f, int num) {
 }
 
 void flexarray_print(flexarray f) {
-    int i, n = f->itemcount;
-    for (i = 0; i < n; i++) {
+    int i;
+    for (i = 0; i < f->itemcount; i++) {
         printf("%d\n", f->items[i]);
     }
 }
