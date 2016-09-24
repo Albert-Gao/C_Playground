@@ -33,12 +33,12 @@ void enqueue(queue q, double item) {
         q->first = node;
         q->first->next = NULL;
         q->last = q->first;
-        q->length++;
     } else if (q->first != NULL) {
         q->last->next = node;
         q->last = node;
-        q->length++;
     }
+    q->length++;
+    
 }
 
 double dequeue(queue q) {

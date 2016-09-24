@@ -64,7 +64,6 @@ double dequeue(queue q) {
 }
 
 void queue_print(queue q) {
-    printf("\n");
     if (q->length > 0) {
         q_item node = q->first;
         while (node != NULL) {
