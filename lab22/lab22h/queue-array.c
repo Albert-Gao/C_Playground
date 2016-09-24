@@ -11,17 +11,20 @@ struct queue {
 };
 
 queue queue_new() {
-    int default_size = 7;
+    int i,default_size = 7;
     queue q = emalloc(sizeof *q);
     q->capacity = default_size;
     q->head = 0;
     q->num_items = 0;
     q->items = emalloc(q->capacity * sizeof q->items[0]);
+    for (i=0;i<q->capacity;i++){
+        q->items[i]=0;
+    }
     return q;
 }
 
 void enqueue(queue q, double item) {
-    /*predefined don't need to code*/
+    /*DON'T NEED TO CODE THIS*/
     if (q->num_items < q->capacity) {
         q->items[(q->head + q->num_items++) % q->capacity] = item;
     }
@@ -46,6 +49,7 @@ void queue_print(queue q) {
 }
 
 void queue_print_info(queue q) {
+    /*DON'T NEED TO CODE THIS*/
     int i;
     printf("capacity %d, num_items %d, head %d\n[", q->capacity, q->num_items,
            q->head);
