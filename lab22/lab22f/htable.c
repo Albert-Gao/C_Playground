@@ -42,7 +42,7 @@ static unsigned int htable_word_to_int(char *word) {
     return result;
 }
 
-int htable_insert1(htable h, char *str){
+int htable_insert(htable h, char *str){
     unsigned int num = htable_word_to_int(str);
     unsigned int index = num%h->capacity;
     if (h->num_keys == h->capacity){
