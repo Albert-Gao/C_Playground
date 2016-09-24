@@ -39,25 +39,12 @@ void enqueue(queue q, double item) {
 }
 
 double dequeue(queue q) {
-    double item = q->first->item;    
-    if (q->length > 1) {
-        /*store the first one;*/
-        q_item node = q->first;
-
-        /*make the 1st node points to the next*/
+    q_item node = emalloc(sizeof * node);
+    node = q->first;
+    if (q->length > 0) {
+        q->length--;
         q->first = node->next;
-
-        /*free the former 1st node*/
-        free(node);
-
-        /*decrease the length*/
-        q->length--;
-
-        return item;
-    } else if (q->length == 1) {
-        free(q->first);
-        q->length--;
-        return item;
+        return node->item;
     }
     return 0;
 }
