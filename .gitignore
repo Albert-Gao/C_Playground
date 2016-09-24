@@ -5,5 +5,8 @@
 *.db-*
 *.db
 *-prog
+*.swp
 lab20/sort
+lab20/lab20e/sort
+lab22/lab22g/bst-test
 prime
