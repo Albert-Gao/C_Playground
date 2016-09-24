@@ -1,7 +1,6 @@
 #ifndef FLEXARRAY_H_
 #define FLEXARRAY_H_
 #include <stddef.h>
-
 typedef struct flexarrayrec *flexarray;
 /*
 extern void* emalloc(size_t);
