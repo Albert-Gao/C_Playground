@@ -6,6 +6,7 @@
 *.db
 *-prog
 *.swp
+lab19/queue
 lab20/sort
 lab20/lab20e/sort
 lab22/lab22g/bst-test
