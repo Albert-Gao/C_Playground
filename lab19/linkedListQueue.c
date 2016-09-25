@@ -42,7 +42,7 @@ void enqueue(queue q, double item) {
 }
 
 double dequeue(queue q) {
-    if (q->length >= 1) {
+    if (q->length > 0) {
         /*store the first one;*/
         q_item node = q->first;
         double item = node->item;
