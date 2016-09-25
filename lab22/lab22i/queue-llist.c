@@ -39,11 +39,15 @@ void enqueue(queue q, double item) {
 }
 
 double dequeue(queue q) {
-    q_item node = q->first;
     if (q->length > 0) {
-        q->length--;
+        q_item node = q->first;
+        double item = node->item;
+
         q->first = node->next;
-        return node->item;
+        free(node);
+        q->length--;
+
+        return item;
     }
     return 0;
 }
