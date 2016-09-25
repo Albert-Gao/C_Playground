@@ -44,6 +44,7 @@ double dequeue(queue q) {
     if (q->length > 0) {
         q->length--;
         q->first = node->next;
+        free(node);
         return node->item;
     }
     return 0;
