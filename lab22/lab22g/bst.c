@@ -4,7 +4,7 @@
 #include "bst.h"
 #include "mylib.h"
 
-struct bst_node {
+struct bstnode {
     char *key;
     bst left;
     bst right;
