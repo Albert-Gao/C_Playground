@@ -5,10 +5,25 @@
 #include "mylib.h"
 
 struct htablemod {
+    /*DON'T NEED TO CODE THIS*/
     int capacity;
     int num_keys;
     char **keys;
 };
+
+static unsigned int htable_word_to_int(char *word) {
+    /*DON'T NEED TO CODE THIS*/
+    unsigned int result = 0;
+    while (*word != '\0') {
+        result = (*word++ + 31 * result);
+    }
+    return result;
+}
+
+static unsigned int htable_hash(htable h, unsigned int i_key) {
+    /*DON'T NEED TO CODE THIS*/
+    return i_key % h->capacity;
+}
 
 htable htable_new(int capacity) {
     int i;
@@ -33,21 +48,12 @@ void htable_free(htable h) {
     free(h);
 }
 
-static unsigned int htable_word_to_int(char *word) {
-    /*DON'T NEED TO CODE THIS*/
-    unsigned int result = 0;
-    while (*word != '\0') {
-        result = (*word++ + 31 * result);
-    }
-    return result;
-}
-
 int htable_insert(htable h, char *str) {
     /*convert the word to number*/
     unsigned int num = htable_word_to_int(str);
 
     /*convert the number to index*/
-    unsigned int index = num % h->capacity;
+    unsigned int index = htable_hash(h, num);
 
     /*if the hash table is full, return 0*/
     if (h->num_keys == h->capacity) {
@@ -70,7 +76,7 @@ int htable_insert(htable h, char *str) {
 
         /*increase index and make sure it is in the safe range*/
         index++;
-        index = index % h->capacity;
+        index = htable_hash(h, index);
     }
 }
 
