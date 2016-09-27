@@ -12,11 +12,11 @@ struct htablemod {
 
 htable htable_new(int capacity) {
     int i;
-    htable result = (htable)emalloc(sizeof *result);
+    htable result = emalloc(sizeof *result);
     result->capacity = capacity;
     result->num_keys = 0;
-    result->keys = (char **)emalloc(result->capacity * sizeof result->keys[0]);
-    for (i = 0; i < result->capacity; i++) {
+    result->keys = emalloc(capacity * sizeof result->keys[0]);
+    for (i = 0; i < capacity; i++) {
         result->keys[i] = NULL;
     }
     return result;
@@ -43,21 +43,32 @@ static unsigned int htable_word_to_int(char *word) {
 }
 
 int htable_insert(htable h, char *str) {
+    /*convert the word to number*/
     unsigned int num = htable_word_to_int(str);
+
+    /*convert the number to index*/
     unsigned int index = num % h->capacity;
+
+    /*if the hash table is full, return 0*/
     if (h->num_keys == h->capacity) {
         return 0;
     }
+
     for (;;) {
+        /*found a space, insert it*/
         if (h->keys[index] == NULL) {
             h->keys[index] = emalloc((strlen(str) + 1) * sizeof str[0]);
             strcpy(h->keys[index], str);
             h->num_keys++;
             return 1;
         }
+
+        /*found same string, inserted before, return 0*/
         if (strcmp(str, h->keys[index]) == 0) {
             return 0;
         }
+
+        /*increase index and make sure it is in the safe range*/
         index++;
         index = index % h->capacity;
     }
