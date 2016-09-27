@@ -99,6 +99,11 @@ void graph_print(graph g){
         }
         printf("\n");
     }
+
+    printf("\nvertex\tdistance pred\n");
+    for(i = 0; i< g->size; i++){
+        printf("%d\t%d\t %d\n", i, g->vertices[i].distance, g->vertices[i].predecessor);
+    }
 }
 
 /**
@@ -126,5 +131,6 @@ void graph_bfs(graph g, int source){
             g->vertices[u].state =  VISITED_DESCENDANTS;
         }
     }
+    
     queue_free(q);
 }
