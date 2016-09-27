@@ -11,14 +11,14 @@ struct queue {
 };
 
 queue queue_new() {
-    int i,default_size = 7;
+    int i, default_size = 7;
     queue q = emalloc(sizeof *q);
     q->capacity = default_size;
     q->head = 0;
     q->num_items = 0;
     q->items = emalloc(q->capacity * sizeof q->items[0]);
-    for (i=0;i<q->capacity;i++){
-        q->items[i]=0;
+    for (i = 0; i < q->capacity; i++) {
+        q->items[i] = 0;
     }
     return q;
 }
@@ -42,10 +42,10 @@ double dequeue(queue q) {
 
 void queue_print(queue q) {
     /* print queue contents one per line to 2 decimal places */
-   int i = 0;
-   for (i = 0; i < q->num_items; i++){
-      printf("%.2f\n", q->items[(q->head + i) % q->capacity]);
-   }
+    int i = 0;
+    for (i = 0; i < q->num_items; i++) {
+        printf("%.2f\n", q->items[(q->head + i) % q->capacity]);
+    }
 }
 
 void queue_print_info(queue q) {
@@ -59,7 +59,7 @@ void queue_print_info(queue q) {
     printf("]\n");
 }
 
-int queue_size(queue q) {return q->num_items;}
+int queue_size(queue q) { return q->num_items; }
 
 queue queue_free(queue q) {
     free(q->items);
