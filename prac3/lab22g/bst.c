@@ -56,8 +56,8 @@ int bst_search(bst b, char *str){
     } else if (strcmp(str,b->key)==0){
         return 1;
     } else if (strcmp(str,b->key)>0){
-        bst_search(b->right,str);
+        return bst_search(b->right,str);
     } else {
-        bst_search(b->left,str);        
+        return bst_search(b->left,str);        
     }
 }
