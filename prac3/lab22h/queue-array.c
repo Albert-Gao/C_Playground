@@ -12,8 +12,8 @@ queue queue_new() {
     int i;
     queue q = emalloc(sizeof *q);
     q->head = 0;
-    q->capacity = 7;
-    q->num_items = 0;
+    q->num_items=0;
+    q->capacity=7;
     q->items = emalloc(7*sizeof q->items[0]);
     for(i=0;i<7;i++){
         q->items[i]=0;
@@ -35,7 +35,7 @@ double dequeue(queue q) {
         q->num_items--;
         return pop;
     }
-    return -8.88;
+    return -1;
 }
 
 void queue_print(queue q) {

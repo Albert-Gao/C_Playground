@@ -11,8 +11,7 @@ struct q_item {
 };
 
 struct queue {
-    q_item first;
-    q_item last;
+    q_item first,last;
     int length;
 };
 
@@ -43,19 +42,19 @@ double dequeue(queue q) {
         double pop = node->item;
 
         q->first = node->next;
-        free(node);
         q->length--;
         return pop;
     }
-    return -8.88;
+    return -8.8;
 }
 
 void queue_print(queue q) {
-    q_item node=q->first;
-    while (node!=NULL){
-        printf("%.2f\n",node->item);
-        node = node->next;
-    }
+    if (q->length>0){
+        q_item node=q->first;
+        while (node!=NULL)
+            printf("%.2f\n",node->item);
+            node = node->next;
+        }
 }
 
 void queue_print_info(queue q) {
@@ -74,7 +73,7 @@ int queue_size(queue q) {
 
 queue queue_free(queue q) {
     q_item node;
-    while(q->first!=NULL){
+    while (q->first!=NULL){
         node = q->first;
         q->first = node->next;
         free(node);
