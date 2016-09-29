@@ -31,9 +31,9 @@ bst bst_insert(bst b, char *str){
         b->key=emalloc((strlen(str)+1)*sizeof b->key[0]);
         strcpy(b->key,str);
     } else if (strcmp(b->key,str)>0){
-        bst_left=bst_insert(b->left,str);
+        bst->left=bst_insert(b->left,str);
     } else if (strcmp(b->key,str)<0){
-        bst_right=bst_insert(b->right,str);
+        bst->right=bst_insert(b->right,str);
     }
     return b;
 }
