@@ -23,7 +23,7 @@ bst bst_free(bst b) {
 bst bst_insert(bst b, char *str) {
     /* create a new tree */
     if (b == NULL) {
-        b = emalloc(sizeof *b);
+        b = emalloc(sizeof(struct bstnode));
         b->left = NULL;
         b->right = NULL;
         b->key = emalloc((strlen(str) + 1) * sizeof str[0]);
@@ -66,7 +66,7 @@ int bst_search(bst b, char *str) {
         return 1;
     } else if (strcmp(str, b->key) > 0) {
         return bst_search(b->right, str);
-    } else if (strcmp(str, b->key) < 0) {
+    } else {
         return bst_search(b->left, str);
     }
 }
