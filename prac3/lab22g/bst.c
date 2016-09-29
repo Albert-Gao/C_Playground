@@ -22,7 +22,7 @@ bst bst_free(bst b) {
 
 bst bst_insert(bst b, char *str) {
     if (b==NULL){
-        bst b = emalloc(sizeof(struct bstnode));
+        bst b = emalloc(sizeof *b);
         b->left = NULL;
         b->right = NULL;
         b->key = emalloc((strlen(str)+1)*sizeof b->key[0]);
