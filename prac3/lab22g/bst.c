@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "htable.h"
+#include "bst.h"
 #include "mylib.h"
 
 struct bstnode {
