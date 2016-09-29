@@ -48,7 +48,7 @@ void htable_free(htable h) {
 
 int htable_insert(htable h, char *str) {
     unsigned int num = htable_word_to_int(str);
-    unsigned int index = htable_hash(h,str);
+    unsigned int index = htable_hash(h,num);
     if(h->capacity == h->num_keys) return 0;
     for(;;){
         if (h->keys[index]==NULL){
