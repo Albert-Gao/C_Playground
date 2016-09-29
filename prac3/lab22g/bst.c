@@ -16,7 +16,7 @@ bst bst_free(bst b) {
     free(b->key);
     if (b->left!=NULL) bst_free(b->left);
     if(b->right!=NULL) bst_free(b->right);
-    free(b)
+    free(b);
     return b;
 }
 
