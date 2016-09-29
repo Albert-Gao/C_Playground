@@ -41,7 +41,7 @@ void htable_free(htable h) {
     int i;
     for (i = 0; i < h->capacity; i++) {
         if (h->keys[i] != NULL)
-            free(h->keys[i])
+            free(h->keys[i]);
     }
     free(h->keys);
     free(h);
@@ -70,6 +70,7 @@ int htable_insert(htable h, char *str) {
 void htable_print(htable h, FILE *stream) {
     /*DON'T NEED TO CODE THIS*/
     /*COPY IT FROM THE PRAC3 BOOK*/
+    int i;
     for (i = 0; i < h->capacity; i++) {
         fprintf(stream, "%2d %s\n", i, h->keys[i] == NULL ? "" : h->keys[i]);
     }
