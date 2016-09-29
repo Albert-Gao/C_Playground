@@ -45,7 +45,7 @@ double dequeue(queue q) {
 void queue_print(queue q) {
     /* print queue contents one per line to 2 decimal places */
     int i;
-    for(i=0;i<7;i++){
+    for(i=0;i<q->num_items;i++){
         printf("%.2f\n",q->items[(q->head+i)%q->capacity]);
     }
 }
