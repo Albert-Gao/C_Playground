@@ -22,6 +22,15 @@ bst bst_free(bst b) {
     return b;
 }
 
+void bst_inorder(bst b, void f(char *str)) {
+    if (b == NULL) {
+        return;
+    }
+    bst_inorder(b->left, f);
+    f(b->key);
+    bst_inorder(b->right, f);
+}
+
 bst bst_insert(bst b, char *str) {
     if (b == NULL) {
         b = emalloc(sizeof(struct bstnode));
@@ -49,15 +58,6 @@ void bst_preorder(bst b, void f(char *str)) {
     f(b->key);
     bst_preorder(b->left, f);
     bst_preorder(b->right, f);
-}
-
-void bst_inorder(bst b, void f(char *str)) {
-    if (b == NULL) {
-        return;
-    }
-    bst_inorder(b->left, f);
-    f(b->key);
-    bst_inorder(b->right, f);
 }
 
 int bst_search(bst b, char *str) {
