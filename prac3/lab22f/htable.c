@@ -38,5 +38,7 @@ int htable_insert(htable h, char *str) {
 }
 
 void htable_print(htable h, FILE *stream) {
+    /*DON'T NEED TO CODE THIS*/
+    /*COPY IT FROM THE PRAC3 BOOK*/
 
 }
