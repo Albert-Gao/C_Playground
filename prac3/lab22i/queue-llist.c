@@ -13,15 +13,14 @@ struct q_item {
 struct queue {
     q_item first;
     q_item last;
-    double item;
     int length;
 };
 
 queue queue_new() {
     queue q = emalloc(sizeof *q);
-    q->first = NULL;
-    q->last = NULL;
-    q->length = 0;
+    q->first=NULL;
+    q->last=NULL;
+    q->length=0;
     return q;
 }
 
@@ -42,19 +41,21 @@ void enqueue(queue q, double item) {
 double dequeue(queue q) {
     if (q->length>0){
         q_item node = q->first;
-        double item = q->first->item;
+        double item = node->item;
 
-        q->first = q->first->next;
+        q->first = node->next;
         free(node);
+        q->length--;
         return item;
     }
+    return -8.88;
 }
 
 void queue_print(queue q) {
     if (q->length>0){
         q_item node = q->first;
-        while (node!=NULL){
-            printf("%d",node);
+        while(node!=NULL){
+            printf("%.2f\n",node->item);
             node = node->next;
         }
     }
@@ -76,9 +77,9 @@ int queue_size(queue q) {
 
 queue queue_free(queue q) {
     q_item node;
-    while(node!=NULL){
+    while(q->first!=NULL){
         node = q->first;
-        q->first = q->first->next;
+        q->first = node->next;
         free(node);
     }
     free(q)

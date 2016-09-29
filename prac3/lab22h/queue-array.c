@@ -7,7 +7,7 @@ struct queue {
     double *items;
     int head;
     int capacity;
-    int num_keys;
+    int num_items;
 };
 
 queue queue_new() {
@@ -15,13 +15,14 @@ queue queue_new() {
     int i;
     queue q = emalloc(sizeof *q);
     q->head = 0;
-    q->capacity = 7;
-    q->num_keys = 0;
-    q->items = emalloc(7*sizeofq->items[0]);
-    for (i=0;i<7;i++){
-        q->items[i] = 0;
+    q->capacity = 0;
+    q->num_items = 0;
+    q->items = emalloc(7*sizeof q->items[0]);
+    for(i=0;i<7;i++){
+        q->items[i]=0;
     }
     return q;
+
 }
 
 void enqueue(queue q, double item) {
@@ -32,21 +33,19 @@ void enqueue(queue q, double item) {
 }
 
 double dequeue(queue q) {
-    if (q->num_keys>0){
-        double pop = q->items[head];
+    if (q->num_items>0){
+        double pop = q->first->items[q->head];
         q->head++;
-        q->num_keys--;
+        q->num_items--;
         return pop;
     }
-    return -8.88;
 }
 
 void queue_print(queue q) {
     /* print queue contents one per line to 2 decimal places */
     int i;
     for(i=0;i<7;i++){
-        if(q->items[i]!=0)
-            printf("%2d\n",q->items[i]);
+        printf("%.2f\n",q->items[(q->head+i)%q->capacity]);
     }
 }
 
@@ -62,11 +61,11 @@ void queue_print_info(queue q) {
 }
 
 int queue_size(queue q) {
-    return q->num_keys;
+    return q->num_items;
 }
 
 queue queue_free(queue q) {
     free(q->items);
-    free(q)
+    free(q);
     return q;
 }
