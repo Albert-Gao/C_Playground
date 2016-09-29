@@ -40,7 +40,7 @@ htable htable_new(int capacity) {
 void htable_free(htable h) {
     int i;
     for(i=0;i<h->capacity;i++){
-        free(h->key[i]);
+        free(h->keys[i]);
     }
     free(h->keys);
     free(h);
