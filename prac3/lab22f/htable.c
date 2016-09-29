@@ -27,22 +27,20 @@ static unsigned int htable_hash(htable h, unsigned int i_key) {
 
 htable htable_new(int capacity) {
     int i;
-    htable h = emalloc(sizeof *h);
-    h->capacity = capacity;
-    h->num_keys = 0;
-    h->keys = emalloc(capacity*sizeof h->keys[0]);
+    htable h =emalloc();
+    h->capacity=capacity;
+    h->num_keys=0;
+    h->keys=emalloc(capacity*sizeof h->keys[0]);
     for(i=0;i<capacity;i++){
-        h->keys[i]=NULL;
+        h->keys[i] = NULL;
     }
     return h;
 }
 
 void htable_free(htable h) {
     int i;
-    for(i=0;i<h->capacity;i++){
-        if (h->keys[i]!=NULL){
-            free(h->keys[i]);
-        }
+    for (i=0;i<h->capacity;i++){
+        if (h->keys[i]!=NULL) free(h->keys[i]);
     }
     free(h->keys);
     free(h);
@@ -59,7 +57,9 @@ int htable_insert(htable h, char *str) {
             strcpy(h->keys[i],str);
             return 1;
         }
-        if (strcmp(h->keys[i],str)==0) return 0;
+        if (strcmp(h->keys[i],str)==0){
+            return 0;
+        }
         i++;
         i=htable_hash(h,i);
     }
