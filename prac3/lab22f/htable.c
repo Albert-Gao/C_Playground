@@ -53,7 +53,7 @@ int htable_insert(htable h, char *str) {
     }
     for(;;){
         if(h->keys[index]==NULL){
-            h->keys[index]==emalloc((strlen(str)+1)*sizeof h->keys[0]);
+            h->keys[index]=emalloc((strlen(str)+1)*sizeof h->keys[0]);
             strcpy(h->keys[index],str);
             h->num_keys++;
             return 1;
