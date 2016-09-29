@@ -41,6 +41,7 @@ int bst_search(bst b, char *str) {
     } else {
         bst_search(b->right, str);
     }
+    return 0;
 }
 
 void bst_inorder(bst b, void f(char *str)) {
@@ -65,11 +66,11 @@ bst bst_free(bst b) {
     free(b->key);
 
     if (b->left != NULL) {
-        b->left = bst_free(b->left);
+        bst_free(b->left);
     }
 
     if (b->right != NULL) {
-        b->right = bst_free(b->right);
+        bst_free(b->right);
     }
     free(b);
     return b;
