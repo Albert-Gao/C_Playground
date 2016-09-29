@@ -3,7 +3,7 @@
 
 /*DON'T NEED TO CODE THIS*/
 
-typedef struct bst_node *bst;
+typedef struct bstnode *bst;
 /*
 bst b = bst_new();
 struct bstnode *b = bst_new();
