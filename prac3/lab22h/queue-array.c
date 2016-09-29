@@ -5,17 +5,17 @@
 
 struct queue {
     double *items;
-    int head,num_items,capacity;
+    int num_items,head,capacity;
 };
 
 queue queue_new() {
     int i;
     queue q = emalloc(sizeof *q);
-    q->head = 0;
+    q->head=0;
     q->num_items=0;
     q->capacity=7;
     q->items = emalloc(7*sizeof q->items[0]);
-    for(i=0;i<7;i++){
+    for (i=0; i<7;i++){
         q->items[i]=0;
     }
     return q;
@@ -35,7 +35,7 @@ double dequeue(queue q) {
         q->num_items--;
         return pop;
     }
-    return -1;
+    return -8.88;
 }
 
 void queue_print(queue q) {

@@ -11,16 +11,14 @@ struct q_item {
 };
 
 struct queue {
-    q_item first;
-    q_item last;
+    q_item first,last;
     int length;
 };
 
 queue queue_new() {
     queue q = emalloc(sizeof *q);
-    q->first = NULL;
-    q->last = NULL;
-    q->length = 0;
+    q->first = q->last = NULL;
+    q-length = 0;
     return q;
 }
 
@@ -39,24 +37,23 @@ void enqueue(queue q, double item) {
 }
 
 double dequeue(queue q) {
-    if (q->length > 0) {
+    if (q->length>0){
         q_item node = q->first;
-        double item = node->item;
+        double pop = node->item;
 
         q->first = node->next;
         free(node);
-        q->length--;
-        return item;
+        return pop;
     }
     return -8.88;
 }
 
 void queue_print(queue q) {
-    if (q->length > 0) {
-        q_item node = q->first;
-        while (node != NULL){
-            printf("%.2f\n", node->item);
-        node = node->next;
+    q_item node;
+    if (q->length>0){
+        while(node!=NULL){
+            printf("%.2f\n",node->item);
+            node = node->next;
         }
     }
 }
@@ -71,13 +68,15 @@ void queue_print_info(queue q) {
     }
 }
 
-int queue_size(queue q) { return q->length; }
+int queue_size(queue q) { 
+    return q->length;
+}
 
 queue queue_free(queue q) {
     q_item node;
-    while (q->first != NULL) {
+    while (q->first!=NULL){
         node = q->first;
-        q->first = q->first->next;
+        q->first = node->next;
         free(node);
     }
     free(q);
