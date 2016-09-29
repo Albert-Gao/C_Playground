@@ -38,7 +38,8 @@ bst bst_insert(bst b, char *str) {
 }
 
 bst bst_new() {
-    return NULL;
+    bst b = NULL;
+    return b;
 }
 
 void bst_preorder(bst b, void f(char *str)) {
