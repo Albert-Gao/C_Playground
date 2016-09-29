@@ -48,16 +48,17 @@ double dequeue(queue q) {
         q->length--;
         return item;
     }
-    return -8.8;
+    return -8.88;
 }
 
 void queue_print(queue q) {
-    if (q->length>0){
-        q_item node=q->first;
-        while (node!=NULL)
-            printf("%.2f\n",node->item);
-            node = node->next;
+    if (q->length > 0) {
+        q_item node = q->first;
+        while (node != NULL){
+            printf("%.2f\n", node->item);
+        node = node->next;
         }
+    }
 }
 
 void queue_print_info(queue q) {
@@ -70,13 +71,11 @@ void queue_print_info(queue q) {
     }
 }
 
-int queue_size(queue q) { 
-    return q->length;
-}
+int queue_size(queue q) { return q->length; }
 
 queue queue_free(queue q) {
     q_item node;
-    while (q->first!=NULL){
+    while (q->first != NULL) {
         node = q->first;
         q->first = q->first->next;
         free(node);
