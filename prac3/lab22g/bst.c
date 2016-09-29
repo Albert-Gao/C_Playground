@@ -12,8 +12,8 @@ struct bstnode{
 
 bst bst_free(bst b){
     free(b->key);
-    if(b->left!=NULL) b->left=bst_free(b->left);
-    if(b->right!=NULL) b->right=bst_free(b->right);
+    if(b->left!=NULL) bst_free(b->left);
+    if(b->right!=NULL) bst_free(b->right);
     free(b);
     return b;
 }
@@ -28,7 +28,8 @@ void bst_inorder(bst b, void f(char *str)){
 bst bst_insert(bst b, char *str){
     if (b==NULL){
         b=emalloc(sizeof *b);
-        b->left = b->right = NULL;
+        b->left = NULL;
+        b->right = NULL;
         b->key = emalloc((strlen(str)+1)*sizeof b->key[0]);
         strcpy(b->key,str);
     } else if (strcmp(str,b->key)>0){
@@ -57,8 +58,9 @@ int bst_search(bst b, char *str){
     } else if (strcmp(b->key,str)==0){
         return 1;
     } else if (strcmp(str,b->key)<0){
-        return bst_search(b->left,str);
+        bst_search(b->left,str);
     } else {
-        return bst_search(b->right,str);
+        bst_search(b->right,str);
     }
+    return 0;
 }
