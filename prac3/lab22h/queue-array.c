@@ -34,7 +34,7 @@ void enqueue(queue q, double item) {
 
 double dequeue(queue q) {
     if (q->num_items>0){
-        double pop = q->first->items[q->head];
+        double pop = q->items[q->head];
         q->head++;
         q->num_items--;
         return pop;
