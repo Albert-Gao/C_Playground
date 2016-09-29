@@ -19,9 +19,9 @@ bst bst_free(bst b){
 
 void bst_inorder(bst b, void f(char *str)){
     if (b==NULL) return;
-    bst_inorder(b->left);
+    bst_inorder(b->left,f);
     f(b->key);
-    bst_inorder(b->right);
+    bst_inorder(b->right,f);
 }
 
 bst bst_insert(bst b, char *str){
@@ -46,8 +46,8 @@ bst bst_new(){
 void bst_preorder(bst b, void f(char *str)){
     if (b==NULL) return;
     f(b->key);
-    bst_preorder(b->left);
-    bst_preorder(b->right);    
+    bst_preorder(b->left,f);
+    bst_preorder(b->right,f);    
 }
 
 int bst_search(bst b, char *str){
