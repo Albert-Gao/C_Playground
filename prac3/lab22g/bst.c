@@ -30,9 +30,9 @@ bst bst_insert(bst b, char *str) {
     } else if (strcmp(str,b->key)==0){
         return NULL;
     } else if (strcmp(str,b->key)>0){
-        bst_insert(b->right,str);
+        b->right = bst_insert(b->right,str);
     } else if (strcmp(str,b->key)<0){
-        bst_insert(b->left,str);
+        b->left = bst_insert(b->left,str);
     }
     return b;
 }
