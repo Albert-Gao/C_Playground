@@ -39,6 +39,7 @@ double dequeue(queue q) {
         q->num_items--;
         return pop;
     }
+    return 0;
 }
 
 void queue_print(queue q) {
