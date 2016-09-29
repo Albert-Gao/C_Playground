@@ -32,7 +32,7 @@ bst bst_insert(bst b, char *str){
         strcpy(b->key,str);
     } else if (strcmp(str,b->key)>0){
         bst_insert(b->right,str);
-    } else {
+    } else if (strcmp(str,b->key)<0) {
         bst_insert(b->left,str);        
     }
     return b;
