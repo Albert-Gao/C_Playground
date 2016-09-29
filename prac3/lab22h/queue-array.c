@@ -5,9 +5,7 @@
 
 struct queue {
     double *items;
-    int head;
-    int capacity;
-    int num_items;
+    int head,num_items,capacity;
 };
 
 queue queue_new() {
@@ -31,19 +29,18 @@ void enqueue(queue q, double item) {
 }
 
 double dequeue(queue q) {
-    if(q->num_items>0){
+    if (q->num_items>0){
         double pop = q->items[q->head];
         q->head++;
         q->num_items--;
         return pop;
     }
-    return -8.8;
 }
 
 void queue_print(queue q) {
     /* print queue contents one per line to 2 decimal places */
     int i;
-    for (i=0;i<q->num_items;i++){
+    for (i=0;i<7;i++){
         printf("%.2f\n",q->items[(q->head+i)%q->capacity]);
     }
 }

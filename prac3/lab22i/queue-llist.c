@@ -47,16 +47,14 @@ double dequeue(queue q) {
         q->length--;
         return pop;
     }
-    return 0;
+    return -8.88;
 }
 
 void queue_print(queue q) {
-    if(q->length>0){
-        q_item node=q->first;
-        while(node!=NULL){
-            printf("%.2f\n",node->item);
-            node = node->next;
-        }
+    q_item node=q->first;
+    while (node!=NULL){
+        printf("%.2f",node->item);
+        node = node->next;
     }
 }
 
