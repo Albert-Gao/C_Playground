@@ -6,6 +6,7 @@
 *.db
 *-prog
 *.swp
+lab14/main
 lab19/main
 lab19/queue
 lab20/sort
