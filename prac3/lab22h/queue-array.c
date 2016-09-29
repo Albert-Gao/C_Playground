@@ -15,7 +15,7 @@ queue queue_new() {
     int i;
     queue q = emalloc(sizeof *q);
     q->head = 0;
-    q->capacity = 0;
+    q->capacity = 7;
     q->num_items = 0;
     q->items = emalloc(7*sizeof q->items[0]);
     for(i=0;i<7;i++){
