@@ -47,8 +47,8 @@ bst bst_new(){
 void bst_preorder(bst b, void f(char *str)){
     if(b==NULL) return;
     f(b->key);
-    bst_inorder(b->left,f);
-    bst_inorder(b->right,f);     
+    bst_preorder(b->left,f);
+    bst_preorder(b->right,f);     
 }
 
 int bst_search(bst b, char *str){
