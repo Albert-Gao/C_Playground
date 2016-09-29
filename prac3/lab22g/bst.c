@@ -27,7 +27,7 @@ void bst_inorder(bst b, void f(char *str)){
 
 bst bst_insert(bst b, char *str){
     if (b==NULL){
-        b=emalloc(*b);
+        b=emalloc(sizeof *b);
         b->left = b->right = NULL;
         b->key = emalloc((strlen(str)+1)*sizeof b->key[0]);
         strcpy(b->key,str);
