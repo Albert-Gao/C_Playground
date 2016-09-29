@@ -14,15 +14,15 @@ bst bst_free(bst b){
     free(b->key);
     if(b->left!=NULL) bst_free(b->left);
     if(b->right!=NULL) bst_free(b->right);
-    free(b)
+    free(b);
     return b;
 }
 
 void bst_inorder(bst b, void f(char *str)){
     if (b==NULL) return;
     f(b->key);
-    bst_inorder(b->left,b->key);
-    bst_inorder(b->right,b->key);    
+    bst_inorder(b->left,f);
+    bst_inorder(b->right,f);    
 }
 
 bst bst_insert(bst b, char *str){
@@ -45,9 +45,9 @@ bst bst_new(){
 
 void bst_preorder(bst b, void f(char *str)){
     if (b==NULL) return;
-    bst_preorder(b->left,b->key);
+    bst_preorder(b->left,f);
     f(b->key);
-    bst_preorder(b->right,b->key);    
+    bst_preorder(b->right,f);    
 }
 
 int bst_search(bst b, char *str){
