@@ -9,7 +9,7 @@ struct queue {
 };
 
 queue queue_new() {
-    int i,default_size = 7;
+    int i;
     queue q = emalloc(sizeof *q);
     q->head = 0;
     q->capacity = 7;
@@ -35,6 +35,7 @@ double dequeue(queue q) {
         q->num_items--;
         return pop;
     }
+    return -8.88;
 }
 
 void queue_print(queue q) {
