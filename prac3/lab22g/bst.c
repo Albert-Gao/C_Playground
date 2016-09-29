@@ -25,7 +25,7 @@ bst bst_insert(bst b, char *str) {
         bst b = emalloc(sizeof *b);
         b->left = NULL;
         b->right = NULL;
-        b->key = emalloc((strlen(str)+1)*sizeof str[0]);
+        b->key = emalloc((strlen(str)+1)*sizeof b->key[0]);
         strcpy(b->key,str);
     } else if (strcmp(str,b->key)==0){
         return NULL;
