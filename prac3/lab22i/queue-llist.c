@@ -53,7 +53,7 @@ double dequeue(queue q) {
 void queue_print(queue q) {
     q_item node=q->first;
     while (node!=NULL){
-        printf("%.2f",node->item);
+        printf("%.2f\n",node->item);
         node = node->next;
     }
 }
