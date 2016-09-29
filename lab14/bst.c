@@ -105,9 +105,9 @@ int bst_search(bst b, char *str){
     } else if (strcmp(str, b->key) == 0){
         return 1;
     } else if (strcmp(str, b->key) > 0){
-        return bst_search(b->right,str);
+    	bst_search(b->right,str);
     } else if (strcmp(str, b->key) < 0){
-        return bst_search(b->left,str);
+        bst_search(b->left,str);
     }
     return 0;
 }

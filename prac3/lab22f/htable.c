@@ -30,7 +30,7 @@ htable htable_new(int capacity) {
     htable h = emalloc(sizeof *h);
     h->capacity = capacity;
     h->num_keys = 0;
-    h->keys = emalloc(capacity * sizeof *keys[0]);
+    h->keys = emalloc(capacity * sizeof h->*keys[0]);
     for (i = 0; i < capacity; i++) {
         h->keys[i] = NULL;
     }
@@ -49,8 +49,8 @@ void htable_free(htable h) {
 }
 
 int htable_insert(htable h, char *str) {
-    int num = htable_word_to_int(str);
-    int index = htable_hash(h, num);
+    unsigned int num = htable_word_to_int(str);
+    unsigned int index = htable_hash(h, num);
     if (h->capacity == h->num_keys) {
         return 0;
     }
@@ -58,9 +58,10 @@ int htable_insert(htable h, char *str) {
         if (h->keys[index] == NULL) {
             h->keys[index] = emalloc((strlen(str) + 1) * sizeof h->keys[0]);
             strcpy(h->keys[index], str);
+            h->num_keys++;
             return 1;
         }
-        if (h->keys[index] == str) {
+        if (strcmp(h->keys[index], str)==0) {
             return 0;
         }
         index++;
