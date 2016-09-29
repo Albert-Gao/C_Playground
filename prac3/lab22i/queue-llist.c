@@ -44,6 +44,7 @@ double dequeue(queue q) {
 
         q->first = node->next;
         free(node);
+        q->length--;
         return pop;
     }
     return 0;
