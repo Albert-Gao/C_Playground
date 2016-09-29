@@ -1,6 +1,8 @@
 #ifndef QUEUE_H_
 #define QUEUE_H_
 
+/*DON'T NEED TO CODE THIS*/
+
 typedef struct queue *queue;
 
 queue queue_new();

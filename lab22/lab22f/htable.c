@@ -81,6 +81,7 @@ int htable_insert(htable h, char *str) {
 }
 
 void htable_print(htable h, FILE *stream) {
+    /*DON'T NEED TO CODE THIS*/
     int i;
     for (i = 0; i < h->capacity; i++) {
         fprintf(stream, "%2d %s\n", i, h->keys[i] == NULL ? "" : h->keys[i]);

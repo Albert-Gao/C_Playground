@@ -1,6 +1,8 @@
 #ifndef HTABLE_H_
 #define HTABLE_H_
 
+/*DON'T NEED TO CODE THIS*/
+
 #include <stdio.h>
 
 typedef struct htablemod *htable;
