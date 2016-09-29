@@ -12,8 +12,8 @@ struct bstnode{
 
 bst bst_free(bst b){
     free(b->key);
-    if(b->left!=NULL) bst_free(b->left);
-    if(b->right!=NULL) bst_free(b->right);
+    if(b->left!=NULL) b->left=bst_free(b->left);
+    if(b->right!=NULL) b->right=bst_free(b->right);
     free(b);
     return b;
 }
