@@ -20,8 +20,8 @@ bst bst_free(bst b){
 
 void bst_inorder(bst b, void f(char *str)){
     if (b==NULL) return;
-    f(b->key);
     bst_inorder(b->left,f);
+    f(b->key);
     bst_inorder(b->right,f);    
 }
 
@@ -47,8 +47,8 @@ bst bst_new(){
 
 void bst_preorder(bst b, void f(char *str)){
     if (b==NULL) return;
-    bst_preorder(b->left,f);
     f(b->key);
+    bst_preorder(b->left,f);
     bst_preorder(b->right,f);    
 }
 
@@ -58,8 +58,8 @@ int bst_search(bst b, char *str){
     } else if (strcmp(b->key,str)==0){
         return 1;
     } else if (strcmp(str,b->key)<0){
-        return bst_search(b->left,str);
+        bst_search(b->left,str);
     } else {
-        return bst_search(b->right,str);
+        bst_search(b->right,str);
     }
 }
