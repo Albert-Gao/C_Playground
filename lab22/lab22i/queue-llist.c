@@ -49,7 +49,7 @@ double dequeue(queue q) {
 
         return item;
     }
-    return 0;
+    return -8.88;
 }
 
 void queue_print(queue q) {
