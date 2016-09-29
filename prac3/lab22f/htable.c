@@ -27,7 +27,7 @@ static unsigned int htable_hash(htable h, unsigned int i_key) {
 
 htable htable_new(int capacity) {
     int i;
-    htable h = emalloc(*h);
+    htable h = emalloc(sizeof *h);
     h->capacity = capacity;
     h->num_keys = 0;
     h->keys = emalloc(capacity * sizeof h->keys[0]);
