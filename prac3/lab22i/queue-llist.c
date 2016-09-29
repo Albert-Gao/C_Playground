@@ -82,6 +82,6 @@ queue queue_free(queue q) {
         q->first = node->next;
         free(node);
     }
-    free(q)
+    free(q);
     return q;
 }
