@@ -74,14 +74,12 @@ int queue_size(queue q) {
 }
 
 queue queue_free(queue q) {
-    if (q->length>0){
-        q_item node=q->first;
-        while(q->first!=NULL){
-            q->first = node->next;
-            free(node);
-        }
-        free(q);
-        return q;
+    q_item node;
+    while(q->first!=NULL){
+        node = q->first;
+        q->first = node->next;
+        free(node);
     }
+    free(q);
     return q;
 }
