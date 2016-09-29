@@ -54,7 +54,7 @@ void queue_print(queue q) {
     if(q->length>0){
         q_item node=q->first;
         while(node!=NULL){
-            printf("%.2f",node->item);
+            printf("%.2f\n",node->item);
             node = node->next;
         }
     }
