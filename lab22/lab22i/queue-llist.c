@@ -75,13 +75,11 @@ void queue_print_info(queue q) {
 int queue_size(queue q) { return q->length; }
 
 queue queue_free(queue q) {
-    int i = 0;
-    q_item node = q->first;
-    while (i < q->length) {
-        q_item tmp = node->next;
+    q_item node;
+    while (q->first != NULL) {
+        node = q->first;
+        q->first = q->first->next;
         free(node);
-        node = tmp;
-        i++;
     }
     free(q);
     return q;
