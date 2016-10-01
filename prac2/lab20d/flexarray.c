@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "mylib.h"
 #include "flexarray.h"
+
 struct flexarrayrec {
     int capacity;
     int itemcount;

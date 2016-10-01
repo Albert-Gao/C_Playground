@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "mylib.h"
 #include "flexarray.h"
 
 struct flexarrayrec {
