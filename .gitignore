@@ -6,12 +6,11 @@
 *.db
 *-prog
 *.swp
-lab14/main
-lab19/main
+_tmp-results
+main
+main
 lab19/queue
-lab20/sort
-lab20/lab20e/sort
+sort
 lab22/lab22g/bst-test
-lab21/main
 lab21/bfs
 prime
