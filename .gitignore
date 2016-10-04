@@ -6,6 +6,8 @@
 *.db
 *-prog
 *.swp
+#graph.c#
+dfs
 .DS_Store
 ._.DS_Store
 _tmp-results
