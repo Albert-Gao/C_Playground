@@ -90,12 +90,20 @@ void graph_bi_add_edge(graph g, int u, int v){
  * vertices which link to the current one.
  */
 void graph_print(graph g){
-    int i,j;
+    int i,j,mark;
     printf("Print Graph as an adjacency list:\n");
     for (i=0; i<g->size; i++){
+        mark = 0;
         printf("%d | ",i);
         for (j=0;j<g->size;j++){
-            if (g->edges[i][j]!=0) printf("%d, ",j);
+            if (g->edges[i][j]!=0){
+                if (mark==0){
+                    printf("%d",j);
+                } else {
+                    printf(", %d",j);
+                }
+                mark++;
+            }
         }
         printf("\n");
     }

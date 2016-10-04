@@ -3,22 +3,20 @@
 #include "graph.h"
 
 int main(void) {
-    graph my_graph = graph_new(5);
+   
+    int d = 0;
+    int i = 0;
+    int x = 0;
+    graph my_graph = NULL;
 
-    graph_bi_add_edge(my_graph, 0, 1);
-    graph_bi_add_edge(my_graph, 0, 3);
-    
-    graph_bi_add_edge(my_graph, 1, 0);
-    graph_bi_add_edge(my_graph, 1, 2);
-    graph_bi_add_edge(my_graph, 1, 4);
-    
-    graph_bi_add_edge(my_graph, 2, 1);
-    graph_bi_add_edge(my_graph, 2, 4);
-    
-    graph_bi_add_edge(my_graph, 3, 0);
-    
-    graph_bi_add_edge(my_graph, 4, 1);
-    graph_bi_add_edge(my_graph, 4, 2);
+
+    if (1 == scanf("%d", &d)) {
+        my_graph = graph_new(d);
+    }
+    while (2 == scanf("%d%d", &i, &x)) {
+        graph_bi_add_edge(my_graph, i, x);
+    }
+
     /*
     graph my_graph = graph_new(8);
 

@@ -6,6 +6,8 @@
 *.db
 *-prog
 *.swp
+.DS_Store
+._.DS_Store
 _tmp-results
 main
 main
