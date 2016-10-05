@@ -3,7 +3,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 public class MultiServer extends Thread {
-    private static List<PrintWriter> clients = new LinkedList<PrintWriter>();
+    private static List < PrintWriter > clients = new LinkedList < PrintWriter > ();
     public static void main(String[] args) {
         try {
             int port = Integer.parseInt(args[0]);
@@ -19,22 +19,21 @@ public class MultiServer extends Thread {
                 new ReadWriteThread(socket.getInputStream(), System.out).start();
             }
         } catch (Exception e) {
-                e.printStackTrace();
-                System.err.println("\nUsage: java MultiServer <port>");
+            e.printStackTrace();
+            System.err.println("\nUsage: java MultiServer <port>");
         }
     }
-    
-        
-        public void run() {
-        
-            Scanner stdin = new Scanner(System.in);
-            while (stdin.hasNextLine()) {
-                    String line = stdin.nextLine();
-                    synchronized(clients) {
-                            for (PrintWriter client : clients) {
-                                    client.println(line);
-                                    }
-                            }
-                    }
+
+
+    public void run() {
+        Scanner stdin = new Scanner(System.in);
+        while (stdin.hasNextLine()) {
+            String line = stdin.nextLine();
+            synchronized(clients) {
+                for (PrintWriter client: clients) {
+                    client.println(line);
+                }
             }
-         }
+        }
+    }
+}
