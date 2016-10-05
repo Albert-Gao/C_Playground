@@ -1,0 +1,41 @@
+Q1 What two ways can you use to create a thread? Explain each in a couple of sentences.
+One is to declare a class to be a subclass of Thread. 
+The other way to create a thread is to declare a class that implements the Runnable interface. That class then implements the run method. 
+
+Q2 Whichever way you choose to create a thread, what is the name of the method that must be part of your thread’s implementation?
+run()
+
+Q3 What method does a program call to start a thread running?
+start()
+
+Q4 What lines in Server.java are different?
+14 and 15
+
+Q5 Explain what lines 14 & 15 do.
+Starts the new thread
+
+Q6 Would it matter if we reversed lines 14 & 15? Why or why not?
+Doesn't matter, they operated in a parallel manner.
+
+Q7 Write the code for Client.java which will work with Server.java using ReadWriteThread.java.
+HINT: Study the code path executed in TCPExample.java when a client is started.
+
+public class Client {
+	public static void main(String[] ars){
+		Socket socket = null;
+		try{
+			int port = Integer.parseInt(args[0]);
+			socket = new Socket(args[1], port);
+			System.err.println("Connect to the server");
+			new ReadWriteThread(System.in, socket.getOutputStream()).start();
+			new ReadWriteThread(socket.getInputStream(), System.out).start();
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+
+}
+
+
+Q8 Why is this happening?
+The threads preempt with each other so the order of the outcome becomes random.

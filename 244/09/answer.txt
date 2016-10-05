@@ -1,0 +1,44 @@
+Q1:
+If we don't use it, multiple threads can access this block which may result in a unexpected result.
+
+Q2:
+Line 15
+
+Q3:
+in the method run(),from line 32 to line 37
+
+Q4:
+ChatServer started
+
+Q5:
+Accepted connection from client_1
+
+Q6:
+Welcome! You are client_1.
+
+Q7:
+Accepted connection from client_2
+
+Q8:
+Welcome! You are client_2.
+
+Q9:
+client_1: Hello from client 1
+
+Q10:
+client_1: Hello from client 1
+
+Q11:
+Sending ’Hello from client 1’ to : [client_1, client_2, client_3]
+
+Q12:
+client_3 closed connection!
+
+Q13:
+client_1: 111
+
+Q14:
+Sending ’111’ to : [client_1, client_2]
+
+Q15:
+client 4
