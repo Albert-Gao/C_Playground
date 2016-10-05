@@ -29,7 +29,7 @@ public class ChatServer {
     }
 
     public static void sendAll(String line, ClientHandler sender) {
-        System.err.println("Sending ’" + line + "’ to : " + clients);
+        System.err.println("Sending `" + line + "` to : " + clients);
         synchronized(clients) {
             for (ClientHandler cl: clients) {
                 cl.send(sender + ": " + line);

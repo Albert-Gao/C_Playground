@@ -7,6 +7,9 @@
 *-prog
 *.swp
 #graph.c#
+*.class
+*.java~
+*.class~
 dfs
 .DS_Store
 ._.DS_Store
