@@ -30,6 +30,24 @@ void *erealloc(void *p, size_t s) {
     return result;
 }
 
+void insertion_sort(int *array, int size) {
+    int i, j,insert_value, k;
+
+    for (i = 1; i < size; i++) {
+        insert_value = array[i];
+        j = i - 1;
+        while (j > 0 && array[j] > array[i]) {
+            array[j+1] = array[j];
+            j--;
+        }
+        array[j+1] = insert_value;
+        if(i==(size-1)/2){
+            for (k=0;k<size;k++)
+                fprintf(stderr,"%d\n",array[k]);
+        }
+    }
+}
+
 flexarray flexarray_new() {
     /* initialise flexarray structure (including items array) */
     flexarray r = emalloc(sizeof *r);
@@ -53,24 +71,6 @@ void flexarray_print(flexarray f) {
     int i;
     for (i = 0; i < f->itemcount; i++)
         printf("%d\n", f->items[i]);
-}
-
-void insertion_sort(int *array, int size) {
-    int i, j,insert_value, k;
-
-    for (i = 0; i < size; i++) {
-        insert_value = array[i];
-        j = i - 1;
-        while (j > 0 && array[j] > array[i]) {
-            array[j+1] = array[j];
-            j--;
-        }
-        array[j+1] = insert_value;
-        if(i==(size-1)/2){
-            for (k=0;k<size;k++)
-                fprintf(stderr,"%d\n",array[k]);
-        }
-    }
 }
 
 void flexarray_sort(flexarray f) { 
