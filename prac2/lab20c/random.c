@@ -13,7 +13,7 @@ void check_repeat(int *arr, int size){
     
     for (i=0;i<size;i++)
         if (check[i]>=2) 
-            printf("%d occurs %d times",i,check[i]);
+            printf("%d occurs %d times\n",i,check[i]);
 
     free(check);
 }
