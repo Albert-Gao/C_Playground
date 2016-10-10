@@ -43,7 +43,7 @@ void swap(int *x, int *y) {
  * then do the previous procedures again.
  */
 void selection_sort(int *arr, int size) {
-    int i, j, min_index, tempSwap, k;
+    int i, j, min_index, k;
 
     for (i = 0; i < size - 1; i++) {
         min_index = i;
