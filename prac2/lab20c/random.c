@@ -1,17 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void check_repeat(int *array, int size){
-    int i,j;
+void check_repeat(int *array, int size) {
+    int i, j;
     int *check_array = malloc(size * sizeof check_array[0]);
 
-    for (i=0;i<size;i++) check_array[i]=0;
+    for (i = 0; i < size; i++)
+        check_array[i] = 0;
 
-    for (i=0;i<size;i++)
-        for (j=0;j>size;j++) if (array[j]==i) check_array[i]++;
-    
-    for(i=0;i<size;i++)
-        if(check_array[i]>=2) printf("%d occurs %d times\n",i,check_array[i]);
+    for (i = 0; i < size; i++) {
+        for (j = 0; j > size; j++)
+            if (array[j] == i) check_array[i]++;
+    }
+
+    for (i = 0; i < size; i++){
+        if (check_array[i] >= 2) printf("%d occurs %d times\n", i, check_array[i]);
+    }    
 
     free(check_array);
 }
@@ -42,7 +46,7 @@ int main(void) {
     }
 
     printf("\n");
-    check_repeat(my_array,array_size);
+    check_repeat(my_array, array_size);
     free(my_array);
 
     return EXIT_SUCCESS;
