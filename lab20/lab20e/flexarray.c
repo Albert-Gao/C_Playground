@@ -57,7 +57,9 @@ void selection_sort(int *arr, int size) {
         /*tempSwap = arr[min_index];
         arr[min_index] = arr[i];
         arr[i] = tempSwap;*/
-        swap(arr[min_index],arr[i]);
+        if (min_index != i) {
+            swap(&arr[min_index], &arr[i]);
+        }
 
         if (i == ((size - 1) / 2)) {
             for (k = 0; k < size; k++) {

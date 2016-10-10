@@ -11,6 +11,8 @@ struct flexarrayrec {
 
 void *emalloc(size_t s) {
     void *result = malloc(s);
+
+    /*copy this from the book!*/    
     if (NULL == result) {
         fprintf(stderr, "Memory allocation failed!!\n");
         exit(EXIT_FAILURE);
@@ -20,11 +22,20 @@ void *emalloc(size_t s) {
 
 void *erealloc(void *p, size_t s) {
     void *result = realloc(p, s);
+    
+    /*copy this from the book!*/    
     if (NULL == result) {
         fprintf(stderr, "Memory re-allocation failed!\n");
         exit(EXIT_FAILURE);
     }
     return result;
+}
+
+void swap(int *x, int *y) {
+    /*copy this from the book!*/
+    int temp = *x; /* temp gets the value living at memory address x. */
+    *x = *y;       /* the value at x gets the value at y. */
+    *y = temp;     /* the value at y gets the variable "temp" */
 }
 
 flexarray flexarray_new() {
