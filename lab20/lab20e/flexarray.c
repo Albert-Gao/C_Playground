@@ -26,6 +26,12 @@ void *erealloc(void *p, size_t s) {
     return result;
 }
 
+void swap(int *x, int *y) {
+    int temp = *x; /* temp gets the value living at memory address x. */
+    *x = *y;       /* the value at x gets the value at y. */
+    *y = temp;     /* the value at y gets the variable "temp" */
+}
+
 /*
  * start from the first item to the last
  * everytime you start from a index,
@@ -48,9 +54,10 @@ void selection_sort(int *arr, int size) {
             }
         }
 
-        tempSwap = arr[min_index];
+        /*tempSwap = arr[min_index];
         arr[min_index] = arr[i];
-        arr[i] = tempSwap;
+        arr[i] = tempSwap;*/
+        swap(arr[min_index],arr[i]);
 
         if (i == ((size - 1) / 2)) {
             for (k = 0; k < size; k++) {
