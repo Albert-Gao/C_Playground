@@ -50,7 +50,8 @@ void flexarray_append(flexarray f, int num) {
     /* add an item to the flexarray, expanding as necessary */
     if (f->itemcount == f->capacity){
         f->capacity += f->capacity;
-        f->items = realloc(f->items,f->capacity);
+        f->items = erealloc(f->items, f->capacity*sizeof f->items[0]);
+
     }
     f->items[f->itemcount++]=num;
 }
