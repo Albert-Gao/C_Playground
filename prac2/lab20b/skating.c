@@ -15,7 +15,8 @@ int main(void){
             win_skater = skater;
         }
 
-        printf("%d\n",win_skater);
+        
     }
+    printf("%d\n",win_skater);
     return EXIT_SUCCESS;
 }
