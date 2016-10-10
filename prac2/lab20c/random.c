@@ -9,16 +9,12 @@ void check_repeat(int *array, int size) {
         check_array[i] = 0;
 
     for (i = 0; i < size; i++) {
-        for (j = 0; j > size; j++) {
-            if (array[j] == i)
-                check_array[i]++;
-        }
+        for (j = 0; j < size; j++)
+            if (array[j] == i) check_array[i]++;
     }
 
-    for (i = 0; i < size; i++) {
-        if (check_array[i] >= 2)
-            printf("%d occurs %d times\n", i, check_array[i]);
-    }
+    for (i = 0; i < size; i++)
+        if (check_array[i] >= 2) printf("%d occurs %d times\n", i, check_array[i]);
 
     free(check_array);
 }
