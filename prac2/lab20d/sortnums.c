@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include "flexarray.h"
 
-/*Copy from lab10*/
-
 int main(void) {
     int item;
     flexarray my_flexarray = flexarray_new();
